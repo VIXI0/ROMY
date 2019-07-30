@@ -1,6 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+import login from './views/login.vue';
+
+import inv_main from './components/inventario/navigation/navigation.vue';
+import inv_welcome from './components/inventario/welcome/welcome.vue';
+import inv_suplidores from './components/inventario/mantenimiento/suplidores.vue';
 
 Vue.use(Router);
 
@@ -9,17 +13,39 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home,
+      path: "/index.html",
+      redirect: "/"
     },
     {
-      path: '/about',
-      name: 'about',
+      path: '/',
+      name: 'login',
+      component: login,
+    },
+    {
+      path: '/menu_sys',
+      name: 'menu_sys',
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+      component: () => import(/* webpackChunkName: "about" */ './views/menu_sys.vue'),
     },
+    {
+      path: '/inv_main',
+      name: 'inv_main',
+      component: inv_main,
+      children: [
+        {
+          path: '/inv_welcome',
+          name: 'inv_welcome',
+          component: inv_welcome
+        },
+
+          {
+            path: '/inv_suplidores',
+            name: 'inv_suplidores',
+            component: inv_suplidores
+          },
+      ]
+    }
   ],
 });

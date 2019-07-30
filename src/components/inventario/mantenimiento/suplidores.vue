@@ -1,0 +1,335 @@
+<template>
+  <v-app style="background-color: rgba(255,255,255,0.0);">
+
+      <v-alert  v-model="alert.model" border="left" transition="slide-x-transition" :type="alert.type" class="mb-4 ma-1">
+        {{alert.text}}
+      </v-alert>
+
+    <v-toolbar flat color="primary" dark max-height="70">
+      <v-toolbar-title dark>Suplidores</v-toolbar-title>
+      <v-divider class="mx-2" inset vertical></v-divider>
+
+
+      <v-dialog v-model="dialog" persistent scrollable max-width="600px" :overlay="false">
+        <template v-slot:activator="{ on }">
+          <v-btn color="white"  v-on="on" icon :disabled="!permition.addSup">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </template>
+
+        <v-card>
+          <v-card-title class="headline primary lighten-2" dark>
+            <span style="color:white" class="headline">{{ formTitle }}</span>
+            <v-spacer></v-spacer>
+            <v-btn dark icon @click="close">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-divider></v-divider>
+
+
+
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+
+                <v-flex xs12>
+                  <h3>Datos</h3>
+                  <v-divider></v-divider>
+                </v-flex>
+
+
+                <v-flex>
+                  <v-text-field label="Nombre" v-model="editedItem.nombre" :filled="view" :readonly="view" autofocus></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-text-field label="Direccion" v-model="editedItem.direccion" :filled="view" :readonly="view"></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-text-field mask="(###) ### - ####" label="Telefono" v-model="editedItem.telefono" :filled="view" :readonly="view"></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-text-field mask="### - ##### - #" label="RNC" :filled="view" :readonly="view" v-model="editedItem.rnc"></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-text-field mask="A##########" label="Numero Comprobante Fiscal (NCF)" v-model="editedItem.ncf" :filled="view" :readonly="view"></v-text-field>
+                </v-flex>
+
+
+                <v-flex xs12>
+                  <h3>Representante</h3>
+                  <v-divider></v-divider>
+                </v-flex>
+
+
+                <v-flex>
+                  <v-text-field label="Nombre" v-model="editedItem.Representante" :filled="view" :readonly="view"></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-text-field mask="(###) ### - ####" label="Telefono" v-model="editedItem.telefonor" :filled="view" :readonly="view"></v-text-field>
+                </v-flex>
+
+
+                <v-flex xs12>
+                  <h3>Anotaciones</h3>
+                  <v-divider></v-divider>
+                </v-flex>
+
+
+                <v-flex>
+                  <v-textarea v-model="editedItem.anotaciones" outlined name="input-7-4" label="Anotaciones" value="" :filled="view" :readonly="view" @keyup.enter="pushEnter"></v-textarea>
+                </v-flex>
+
+              </v-layout>
+            </v-container>
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="red" @click="close">Cancelar</v-btn>
+            <v-btn color="primary" @click="save">Guardar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-spacer></v-spacer>
+
+      <v-text-field v-model="search" append-icon="mdi-search" label="Buscar" color="white" single-line hide-details rounded solo-inverted flat clearable></v-text-field>
+
+    </v-toolbar>
+
+    <v-container grid-list-xs,sm,md,lg,xl>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <v-data-table
+            :headers="headers"
+            :items="Suplidores"
+            :sort-desc="[false, true]"
+            :search="search"
+            multi-sort
+            class="elevation-1"
+          ></v-data-table>
+        </v-flex>
+      </v-layout>
+    </v-container>
+
+  </v-app>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+  data: () => ({
+    alert: {
+      type: "info",
+      model: false,
+      text: ""
+    },
+    search: '',
+    dialog: false,
+    view: false,
+    permition: {
+      addSup: true
+    },
+    headers: [{
+        text: 'Nombre',
+        align: 'left',
+        sortable: true,
+        value: 'nombre'
+      },
+      {
+        text: 'Direccion',
+        value: 'direccion'
+      },
+      /*{
+        text: 'Telefono',
+        value: 'telefono'
+      },*/
+      {
+        text: 'NCF',
+        value: 'ncf'
+      },
+      {
+        text: 'Representante',
+        value: 'Representante'
+      },
+      /*{
+        text: 'Telefono',
+        value: 'telefonor'
+      },*/
+      {
+        text: 'Actions',
+        value: 'name',
+        sortable: false
+      }
+    ],
+    Suplidores: [],
+    editedIndex: -1,
+    editedItem: {
+      nombre: '',
+      direccion: '',
+      telefono: 0,
+      rnc: '',
+      ncf: '',
+      Representante: '',
+      telefonor: 0,
+      anotaciones:""
+    },
+    defaultItem: {
+      nombre: '',
+      direccion: '',
+      telefono: 0,
+      rnc: '',
+      ncf: '',
+      Representante: '',
+      telefonor: 0,
+      anotaciones: ""
+    }
+  }),
+
+    computed: {
+      formTitle() {
+        if (this.editedIndex === -1) {
+          return 'Nuevo Suplidor'
+        } else {
+          return this.view === true ? 'Mostrar Suplidor' : 'Editar Suplidor'
+        }
+
+      }
+    },
+
+    watch: {
+      dialog(val) {
+        val || this.close()
+      }
+    },
+
+    created() {
+      this.initialize()
+    },
+
+    methods: {
+
+      async initialize() {
+
+        try {
+          var result = await axios({
+            method: "POST",
+            data: {
+              query: `
+                        {
+                          Suplidores{
+                            _id,
+                            nombre,
+                            direccion,
+                            telefono,
+                            rnc,
+                            ncf,
+                            Representante,
+                            telefonor,
+                            anotaciones
+                          }
+                        }
+                  `
+            }
+          })
+        } catch (e) {
+          this.alert.type = "error"
+          this.alert.text = e
+          this.alert.model = true
+        } finally {
+          this.Suplidores = result.data.data.Suplidores
+        }
+
+      },
+
+      editItem(item) {
+        this.view = false,
+          this.editedIndex = this.Suplidores.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+
+      viewItem(item) {
+        this.view = true,
+          this.editedIndex = this.Suplidores.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true
+
+      },
+
+      close() {
+        this.view = false,
+          this.dialog = false
+        setTimeout(() => {
+          this.editedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        }, 300)
+      },
+
+      async save() {
+        if (this.editedIndex > -1) {
+          // edita Suplidor
+          if (
+            await axios({
+              method: "POST",
+              data: {
+                query: `
+                  mutation {
+                    updateSuplidor(_id: "${this.editedItem._id}", input: {
+                      nombre: "${this.editedItem.nombre}",
+                      direccion: "${this.editedItem.direccion}",
+                      telefono: ["${this.editedItem.telefono}"],
+                      rnc: "${this.editedItem.rnc}",
+                      ncf: "${this.editedItem.ncf}",
+                      Representante: "${this.editedItem.Representante}",
+                      telefonor: ["${this.editedItem.telefonor}"],
+                      anotaciones: """${this.editedItem.anotaciones}"""
+                    })
+                  }
+                  `
+              }
+            })
+          ) {
+            Object.assign(this.Suplidores[this.editedIndex], this.editedItem)
+          }
+
+        } else {
+          if (
+            await axios({
+              method: "POST",
+              data: {
+                query: `
+                  mutation {
+                          createSuplidor(input: {
+                            nombre: "${this.editedItem.nombre}",
+                            direccion: "${this.editedItem.direccion}",
+                            telefono: ["${this.editedItem.telefono}"],
+                            rnc: "${this.editedItem.rnc}",
+                            ncf: "${this.editedItem.ncf}",
+                            Representante: "${this.editedItem.Representante}",
+                            telefonor: ["${this.editedItem.telefonor}"],
+                            anotaciones: """${this.editedItem.anotaciones}"""
+                          } )
+                          }
+                  `
+              }
+            })
+          ) {
+            this.Suplidores.push(this.editedItem)
+          }
+
+        }
+
+        this.close()
+      },
+      pushEnter(){
+        this.editedItem.anotaciones.concat("");
+      }
+    }
+}
+</script>
+
+<style lang="css" scoped>
+</style>

@@ -1,0 +1,113 @@
+Acuerdo de licencia de usuario final para Apps (EULA)
+
+Importante: léase atentamente las condiciones de este acuerdo de licencia antes de
+continuar con la instalaccion del software.
+Al realizar la instalaccion, entra en vigor un contrato por el uso del software de Miguel de Jesús Rodríguez Ruíz
+
+ROM (en adelante el "software") entre usted y el Desarrollador  Miguel de Jesús Rodríguez Ruíz
+ (en adelante: "Desarrollador"). Con la descarga, usted acepta
+
+las siguientes condiciones.
+
+
+1. Derechos de uso:
+Este acuerdo contiene los siguientes derechos de uso del software:
+Al descargarse el software, Desarrollador le otorga el derecho no excluyente de utilizarlo en un
+dispositivo de su propiedad, es decir, en un aparato suyo en el cual el software pueda
+funcionar según los requisitos del sistema, los cuales podrá consultar al final de estas
+condiciones.
+
+Queda prohibido distribuirlo o transmitirlo de ninguna manera a terceras personas (inclusive
+alquiler, arriendo, préstamo o sublicencia).
+No podrá modificar el código del programa del software ni ninguna de sus partes; tampoco
+aplicar ingeniería inversa (reverse engineering), descompilar, desensamblar ni determinar de
+otra forma el código fuente, ni tampoco crear obras derivadas del software.
+
+Las condiciones presenten serán también de aplicación para todas las actualizaciones y
+mejoras, así como los complementos de programación del software que Desarrollador pone a su
+disposición para su descarga, siempre y cuando no sean objeto de un acuerdo especial. Si
+este fuera el caso, solo se aplicarán las determinaciones válidas para la correspondiente
+actualización, mejora o complemento de programación en cuestión.
+Desarrollador se reserva todos los demás derechos.
+
+2. Obligación de cooperación:
+Al utilizar el software, deberá respetar el deber de diligencia debida obligatoria y comprobar
+los resultados generados por el software antes de utilizarlos dentro del alcance adecuado.
+Asimismo, está obligado a realizar una copia de seguridad de sus datos de forma regular
+que garantice su recuperación en caso de pérdida.
+
+
+3. Recopilación y uso de datos:
+El software recopila exclusivamente datos personales con fines de registro y utilización de
+las funciones del software en «http://cuco.mywire.org» y/o para recoger y procesar
+peticiones. Al registrarse en nuestros servicios, usted se declara conforme con que
+recopilemos, tratemos y utilicemos los datos de contacto proporcionados durante el proceso
+de registro, así como los datos personales de registro indicados voluntariamente durante el
+uso de los servicios, en la medida en que ello sea necesario para la prestación de los
+servicios, de conformidad con las disposiciones contractuales. Si desea más información
+consulte nuestra política de privacidad.
+4. Garantía y responsabilidad:
+a. Garantía y responsabilidad para el software gratuito En caso de defectos
+materiales y jurídicos Desarrollador solo se responsabilizará de aquellos que se
+produjeran por haberlos ocultado de mala fe, independientemente del motivo legal.
+Por lo demás, tanto Desarrollador como sus representantes legales y agentes auxiliares
+solo serán responsables del software proporcionado gratuitamente si hubiera un
+incumplimiento por dolo o negligencia grave, en cuyo caso indemnizarán el daño
+eventualmente ocasionado. Los demás derechos de reclamación permanecen
+inalterados, según la ley de responsabilidad del producto.
+b. Responsabilidad por software sujeto a pago. Si el software tuviera un defecto
+material o jurídico subsanable, usted podrá ejercer su derecho y reclamarle a
+Bosch un arreglo. En caso de posibles reclamaciones por daños y perjuicios, se
+aplicará lo establecido en el punto c).
+El plazo para reclamar un defecto material o jurídico del software que usted ha
+adquirido previo pago como empresa, es de 12 meses. Esto no será de aplicación
+si la responsabilidad se dirime de conformidad con las determinaciones legales.
+
+c. Limitación de responsabilidad para el software sujeto a pago. Siempre y
+cuando haya adquirido el software previo pago, Desarrollador solo se responsabilizará de
+acuerdo a las siguientes normativas, independientemente del motivo legal:
+La responsabilidad se dirimirá según las determinaciones legales en los siguientes
+casos:
+• daños ocasionados por imprudencia o negligencia grave,
+• daños por incumplimiento de las garantías otorgadas por escrito, dentro
+del alcance de la finalidad cubierta por la garantía,
+• en caso de dolo,
+• por lesiones físicas y personales,
+• por responsabilidad del producto, según la ley de responsabilidad del
+producto,
+
+
+En el caso de que la responsabilidad no se dirima según las determinaciones
+legales de la lista precedente, se aplicará lo siguiente: En casos de incumplimiento
+de las condiciones contractuales que sean nimias o irrelevantes, Desarrollador no se
+responsabilizara por daños y perjuicios. Para todo lo demás, la responsabilidad de
+Desarrollador con respecto a los daños ocasionados por negligencias breves se limita a lo
+contemplado dentro del marco de la relación contractual establecida y se calcula
+correspondientemente con relación a ello (daños típicos previstos por contrato).
+Esto también será de aplicación para el representante legal, el empleado directivo
+o el agente auxiliar que incumpla las obligaciones del contrato. En el caso de que
+usted sea empresa, en el sentido otorgado por el artículo 14 del Código civil
+alemán, las partes acuerdan que si Desarrollador incumpliera las obligaciones
+contractuales, se limitará al pago de una compensación por el valor máximo
+acordado en este contrato para daños típicos previstos en el acuerdo. Las
+susodichas limitaciones de responsabilidad también se aplicarán para
+reclamaciones por daños y perjuicios.
+d. Siempre y cuando la responsabilidad de Desarrollador sea limitada o no proceda, de
+conformidad con estas determinaciones, lo mismo será de aplicación en cuanto a
+la responsabilidad de los directivos, encargados y agentes auxiliares, incluyendo a
+los empleados de Desarrollador.
+
+5. Transferencia/Cesión:
+La transferencia de los derechos de uso requiere nuestro consentimiento explícito. Además,
+la transferencia puede negarse debido a un bloqueo técnico del proveedor a través del cual
+se reparte el software.
+
+6. Soporte:
+Usted tiene derecho a disponer de servicios de soporte técnico, como actualizaciones o
+asesoría, más allá del derecho de garantía. Bosch pone a su disposición unos servicios de
+soporte técnico que finalizarán cuando acabe el plazo de garantía.
+
+7. Otros:
+Si alguna de las condiciones o partes de este contrato resultaran ser inefectivas, no por ello
+se verán afectadas las demás condiciones o partes del contrato.
+Fecha: Mayo de 2019
