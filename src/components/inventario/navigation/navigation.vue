@@ -143,7 +143,7 @@
 
                 <v-list-item>
                   <v-list-item-action>
-                    <v-switch color="black"></v-switch>
+                    <v-switch color="black" v-model="tableDense"></v-switch>
                   </v-list-item-action>
                   <v-list-item-title>Tablas densas</v-list-item-title>
                 </v-list-item>
@@ -180,6 +180,7 @@ export default {
     image: {
       background: require('./../../../assets/background.jpg')
     },
+    tableDense: false,
     alert: {
       type: "info",
       model: false,
@@ -211,6 +212,12 @@ export default {
 
   created() {
     this.initialize()
+  },
+
+  watch: {
+    tableDense(tableDense) {
+      this.$store.commit('changeDense', tableDense)
+    }
   },
 
   methods: {
@@ -259,6 +266,8 @@ export default {
 
       }
     },
+
+
   },
 }
 </script>

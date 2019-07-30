@@ -1,9 +1,6 @@
 <template>
   <v-app style="background-color: rgba(255,255,255,0.0);">
 
-      <v-alert  v-model="alert.model" border="left" transition="slide-x-transition" :type="alert.type" class="mb-4 ma-1">
-        {{alert.text}}
-      </v-alert>
 
     <v-toolbar flat color="primary" dark max-height="70">
       <v-toolbar-title dark>Suplidores</v-toolbar-title>
@@ -17,7 +14,7 @@
           </v-btn>
         </template>
 
-        <v-card>
+        <v-card :loading="cardLoading">
           <v-card-title class="headline primary lighten-2" dark>
             <span style="color:white" class="headline">{{ formTitle }}</span>
             <v-spacer></v-spacer>
@@ -28,8 +25,12 @@
           <v-divider></v-divider>
 
 
-
           <v-card-text>
+
+            <v-alert  v-model="alert_dialog.model" border="left" transition="slide-x-transition" :type="alert_dialog.type" class="mb-4 ma-1">
+              {{alert_dialog.text}}
+            </v-alert>
+
             <v-container grid-list-md>
               <v-layout wrap>
 
@@ -94,9 +95,13 @@
 
       <v-spacer></v-spacer>
 
-      <v-text-field v-model="search" append-icon="mdi-search" label="Buscar" color="white" single-line hide-details rounded solo-inverted flat clearable></v-text-field>
+      <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" color="white" single-line hide-details rounded solo-inverted flat clearable></v-text-field>
 
     </v-toolbar>
+
+    <v-alert  v-model="alert.model" border="left" transition="slide-x-transition" :type="alert.type" class="mb-4 ma-1">
+      {{alert.text}}
+    </v-alert>
 
     <v-container grid-list-xs,sm,md,lg,xl>
       <v-layout row wrap>
@@ -106,9 +111,33 @@
             :items="Suplidores"
             :sort-desc="[false, true]"
             :search="search"
+            :dense="this.$store.getters.tableDense"
+            :loading="tableLoading"
             multi-sort
-            class="elevation-1"
-          ></v-data-table>
+            class="elevation-1">
+            <template v-slot:item.action="{ item }">
+              <v-icon
+                small
+                class="mr-2"
+                @click="viewItem(item)"
+              >
+                mdi-magnify
+              </v-icon>
+              <v-icon
+                small
+                class="mr-2"
+                @click="editItem(item)"
+              >
+                mdi-pencil
+              </v-icon>
+              <v-icon
+                small
+                @click="deleteItem(item)"
+              >
+                mdi-delete
+              </v-icon>
+            </template>
+        </v-data-table>
         </v-flex>
       </v-layout>
     </v-container>
@@ -126,6 +155,13 @@ export default {
       model: false,
       text: ""
     },
+    alert_dialog: {
+      type: "info",
+      model: false,
+      text: ""
+    },
+    tableLoading: false,
+    cardLoading: false,
     search: '',
     dialog: false,
     view: false,
@@ -160,7 +196,7 @@ export default {
       },*/
       {
         text: 'Actions',
-        value: 'name',
+        value: 'action',
         sortable: false
       }
     ],
@@ -212,7 +248,7 @@ export default {
     methods: {
 
       async initialize() {
-
+        this.tableLoading = true
         try {
           var result = await axios({
             method: "POST",
@@ -240,6 +276,7 @@ export default {
           this.alert.model = true
         } finally {
           this.Suplidores = result.data.data.Suplidores
+          this.tableLoading = false
         }
 
       },
@@ -269,60 +306,75 @@ export default {
       },
 
       async save() {
+        this.cardLoading = true
         if (this.editedIndex > -1) {
           // edita Suplidor
-          if (
-            await axios({
-              method: "POST",
-              data: {
-                query: `
-                  mutation {
-                    updateSuplidor(_id: "${this.editedItem._id}", input: {
-                      nombre: "${this.editedItem.nombre}",
-                      direccion: "${this.editedItem.direccion}",
-                      telefono: ["${this.editedItem.telefono}"],
-                      rnc: "${this.editedItem.rnc}",
-                      ncf: "${this.editedItem.ncf}",
-                      Representante: "${this.editedItem.Representante}",
-                      telefonor: ["${this.editedItem.telefonor}"],
-                      anotaciones: """${this.editedItem.anotaciones}"""
-                    })
-                  }
-                  `
-              }
-            })
-          ) {
+
+          var result = await axios({
+                        method: "POST",
+                        data: {
+                          query: `
+                            mutation {
+                              updateSuplidor(_id: "${this.editedItem._id}", input: {
+                                nombre: "${this.editedItem.nombre}",
+                                direccion: "${this.editedItem.direccion}",
+                                telefono: ["${this.editedItem.telefono}"],
+                                rnc: "${this.editedItem.rnc}",
+                                ncf: "${this.editedItem.ncf}",
+                                Representante: "${this.editedItem.Representante}",
+                                telefonor: ["${this.editedItem.telefonor}"],
+                                anotaciones: """${this.editedItem.anotaciones}"""
+                              })
+                            }
+                            `
+                        }
+                      })
+          if ( result.data.data.updateSuplidor ) {
             Object.assign(this.Suplidores[this.editedIndex], this.editedItem)
+            this.cardLoading = false
+            this.close()
+          }else {
+            this.cardLoading = false
+            this.alert_dialog.type = "error"
+            this.alert_dialog.text = result.data.error.errors.message
+            this.alert_dialog.model = true
           }
 
         } else {
-          if (
-            await axios({
-              method: "POST",
-              data: {
-                query: `
-                  mutation {
-                          createSuplidor(input: {
-                            nombre: "${this.editedItem.nombre}",
-                            direccion: "${this.editedItem.direccion}",
-                            telefono: ["${this.editedItem.telefono}"],
-                            rnc: "${this.editedItem.rnc}",
-                            ncf: "${this.editedItem.ncf}",
-                            Representante: "${this.editedItem.Representante}",
-                            telefonor: ["${this.editedItem.telefonor}"],
-                            anotaciones: """${this.editedItem.anotaciones}"""
-                          } )
-                          }
-                  `
-              }
-            })
-          ) {
+
+          var result = await axios({
+            method: "POST",
+            data: {
+              query: `
+                mutation {
+                        createSuplidor(input: {
+                          nombre: "${this.editedItem.nombre}",
+                          direccion: "${this.editedItem.direccion}",
+                          telefono: ["${this.editedItem.telefono}"],
+                          rnc: "${this.editedItem.rnc}",
+                          ncf: "${this.editedItem.ncf}",
+                          Representante: "${this.editedItem.Representante}",
+                          telefonor: ["${this.editedItem.telefonor}"],
+                          anotaciones: """${this.editedItem.anotaciones}"""
+                        } )
+                        }
+                `
+            }
+          })
+          if ( result.data.data.createSuplidor ) {
             this.Suplidores.push(this.editedItem)
+            this.cardLoading = false
+            this.close()
+          }else {
+            this.cardLoading = false
+            this.alert_dialog.type = "error"
+            this.alert_dialog.text = result.data.data.createSuplidor
+            this.alert_dialog.model = true
           }
 
         }
 
-        this.close()
+
       },
       pushEnter(){
         this.editedItem.anotaciones.concat("");

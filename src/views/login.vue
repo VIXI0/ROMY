@@ -189,6 +189,7 @@ export default {
     setBaseURL(){
       this.$http.defaults.baseURL = this.baseURL
       this.menu = false
+      this.loading = false
     },
     cancelBaseURL(){
       this.baseURL =  ''
