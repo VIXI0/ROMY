@@ -23,6 +23,7 @@
 <script lang="ts">
 import Vue from 'vue';
 const { remote } = require('electron');
+
 var win = remote.getCurrentWindow();
 
 export default Vue.extend({

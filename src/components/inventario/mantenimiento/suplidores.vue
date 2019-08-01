@@ -85,10 +85,15 @@
             </v-container>
           </v-card-text>
 
-          <v-card-actions>
+          <v-card-actions v-if="!view" style="background-color: lightgray;">
             <v-spacer></v-spacer>
             <v-btn text color="red" @click="close">Cancelar</v-btn>
             <v-btn color="primary" @click="save">Guardar</v-btn>
+          </v-card-actions>
+
+          <v-card-actions v-else style="background-color: lightgray;">
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="close">Aceptar</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -147,6 +152,7 @@
 
 <script>
 import axios from 'axios'
+const { dialog } = require('electron').remote
 
 export default {
   data: () => ({
@@ -205,21 +211,21 @@ export default {
     editedItem: {
       nombre: '',
       direccion: '',
-      telefono: 0,
+      telefono: "",
       rnc: '',
       ncf: '',
       Representante: '',
-      telefonor: 0,
+      telefonor: "",
       anotaciones:""
     },
     defaultItem: {
       nombre: '',
       direccion: '',
-      telefono: 0,
+      telefono: "",
       rnc: '',
       ncf: '',
       Representante: '',
-      telefonor: 0,
+      telefonor: "",
       anotaciones: ""
     }
   }),
@@ -294,6 +300,25 @@ export default {
         this.editedItem = Object.assign({}, item)
         this.dialog = true
 
+      },
+
+      deleteItem(item){
+                  const options = {
+              type: 'question',
+              buttons: ['Cancelar', 'Si, Seguro'],
+              defaultId: 0,
+              noLink: true,
+              cancelId: 0,
+              title: 'Confirmacion',
+              message: 'Seguro que quieres inactivar suplidor',
+              detail: 'Para activarlo nuevamente consulte a su administrador',
+              //checkboxLabel: 'Remember my answer',
+              //checkboxChecked: true,
+            };
+            dialog.showMessageBox(null, options, (response/*, checkboxChecked*/) => {
+            //console.log(response);
+            //console.log(checkboxChecked);
+              });
       },
 
       close() {
