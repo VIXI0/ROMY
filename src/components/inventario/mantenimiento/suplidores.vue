@@ -47,13 +47,13 @@
                   <v-text-field label="Direccion" v-model="editedItem.direccion" :filled="view" :readonly="view"></v-text-field>
                 </v-flex>
                 <v-flex>
-                  <v-text-field mask="(###) ### - ####" label="Telefono" v-model="editedItem.telefono" :filled="view" :readonly="view"></v-text-field>
+                  <v-text-field v-mask="'(###) ### - ####'" label="Telefono" v-model="editedItem.telefono" :filled="view" :readonly="view"></v-text-field>
                 </v-flex>
                 <v-flex>
-                  <v-text-field mask="### - ##### - #" label="RNC" :filled="view" :readonly="view" v-model="editedItem.rnc"></v-text-field>
+                  <v-text-field v-mask="'### - ##### - #'" label="RNC" :filled="view" :readonly="view" v-model="editedItem.rnc"></v-text-field>
                 </v-flex>
                 <v-flex>
-                  <v-text-field mask="A##########" label="Numero Comprobante Fiscal (NCF)" v-model="editedItem.ncf" :filled="view" :readonly="view"></v-text-field>
+                  <v-text-field v-mask="'A##########'" label="Numero Comprobante Fiscal (NCF)" v-model="editedItem.ncf" :filled="view" :readonly="view"></v-text-field>
                 </v-flex>
 
 
@@ -67,7 +67,7 @@
                   <v-text-field label="Nombre" v-model="editedItem.Representante" :filled="view" :readonly="view"></v-text-field>
                 </v-flex>
                 <v-flex>
-                  <v-text-field mask="(###) ### - ####" label="Telefono" v-model="editedItem.telefonor" :filled="view" :readonly="view"></v-text-field>
+                  <v-text-field v-mask="'(###) ### - ####'" label="Telefono" v-model="editedItem.telefonor" :filled="view" :readonly="view"></v-text-field>
                 </v-flex>
 
 
