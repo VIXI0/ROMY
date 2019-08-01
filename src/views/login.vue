@@ -173,7 +173,7 @@ export default {
         this.alert.model = true
       } finally {
         this.loading = false
-        if(token.data.data.login === "contraseña incorrecta" || token.data.data.login ===  "usuario no existente"){
+        if(token.data.data.login === "Contraseña incorrecta" || token.data.data.login ===  "Usuario no existente" || token.data.data.login === "Usuario inactivo"){
           this.alert.type = "error"
           this.alert.text = token.data.data.login
           this.alert.model = true
