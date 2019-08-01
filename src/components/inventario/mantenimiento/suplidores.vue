@@ -141,6 +141,10 @@
               >
                 mdi-delete
               </v-icon>
+              <v-icon
+              small
+              @click="restoreItem(item)"
+              >mdi-backup-restore</v-icon>
             </template>
         </v-data-table>
         </v-flex>
@@ -320,6 +324,25 @@ export default {
             //console.log(checkboxChecked);
               });
       },
+
+      restoreItem(item){
+                  const options = {
+              type: 'question',
+              buttons: ['Cancelar', 'Si, Seguro'],
+              defaultId: 0,
+              noLink: true,
+              cancelId: 0,
+              title: 'Confirmacion',
+              message: 'Seguro que quieres activar suplidor',
+              detail: 'Para desactivarlo nuevamente consulte a su administrador',
+              //checkboxLabel: 'Remember my answer',
+              //checkboxChecked: true,
+            };
+            dialog.showMessageBox(null, options, (response/*, checkboxChecked*/) => {
+            //console.log(response);
+            //console.log(checkboxChecked);
+              });
+  },
 
       close() {
         this.view = false,
