@@ -403,7 +403,8 @@ export default {
                           ncf: "${this.editedItem.ncf}",
                           Representante: "${this.editedItem.Representante}",
                           telefonor: ["${this.editedItem.telefonor}"],
-                          anotaciones: """${this.editedItem.anotaciones}"""
+                          anotaciones: """${this.editedItem.anotaciones}""",
+                          active: true
                         } )
                         }
                 `
