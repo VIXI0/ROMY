@@ -155,10 +155,12 @@
 </template>
 
 <script>
-import axios from 'axios'
-const { dialog } = require('electron').remote
+import axios from 'axios';
+const { dialog } = require('electron').remote;
+import {mask} from 'vue-the-mask';
 
 export default {
+  directives: {mask},
   data: () => ({
     alert: {
       type: "info",

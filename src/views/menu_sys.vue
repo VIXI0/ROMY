@@ -86,12 +86,11 @@ import axios from 'axios';
         Inventario: require('./../assets/manufacturing-inventory.jpg'),
       },
       alert: {
-        type: "info",
+        type: 'info',
         model: false,
         text: '',
       },
       show: false,
-      card_text: 'El inventario representa la existencia de bienes almacenados destinados a  realizar una operación, sea de compra, alquiler, venta, uso o transformación. Debe aparecer, contablemente, dentro del activo como un activo circulante.',
 
     }),
 
@@ -115,13 +114,13 @@ import axios from 'axios';
         } catch (e) {
           this.alert.type = 'error',
           this.alert.text = e,
-          this.alert.model = true
+          this.alert.model = true;
         } finally {
-          this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token.data.data.logout
-          this.$router.push('/')
+          this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token.data.data.logout;
+          this.$router.push('/');
 
         }
       },
     },
-  }
+  };
 </script>

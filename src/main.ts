@@ -7,7 +7,7 @@ import vuetify from './plugins/vuetify';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import '@mdi/font/css/materialdesignicons.css';
 import axios from 'axios';
-const VueTheMask = require('vue-the-mask');
+//const VueTheMask = require('vue-the-mask');
 
 
 Vue.config.productionTip = false;
@@ -29,7 +29,7 @@ Vue.use(Vuetify, {
 })
 */
 
-Vue.use(VueTheMask)
+//Vue.use(VueTheMask)
 
 new Vue({
   router,
