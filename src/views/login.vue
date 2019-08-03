@@ -125,7 +125,7 @@ offset-y left
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   props: {
@@ -134,26 +134,26 @@ export default {
   data: () => ({
 
     image: {
-      background: require('./../assets/background.jpg')
+      background: require('./../assets/background.jpg'),
     },
     loading: false,
     menu: false,
     baseURL: '',
     drawer: null,
     cred: {
-      user: "",
-      password: ""
+      user: '',
+      password: '',
     },
     alert: {
       type: "info",
       model: false,
-      text: ""
+      text: '',
     },
   }),
 
   methods: {
 
-    async setRole(){
+    async setRole() {
       try {
         var result = await axios({
           method: "POST",
@@ -164,6 +164,7 @@ export default {
                 nombre,
                 permisos{
                   sistema,
+                  descripcion,
                   link,
                   menu{
                     titulo,

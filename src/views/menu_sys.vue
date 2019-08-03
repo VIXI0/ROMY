@@ -32,16 +32,16 @@
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-left justify-left>
-          <v-flex xs12 sm4 md3 >
+          <v-flex xs12 sm4 md3 v-for="sistema in sistemas" :key="sistema.sistema">
                 <v-card>
                   <v-img
-                    :src="image.manufacturing_inventory"
+                    :src="image[`${sistema.sistema}`]"
                     aspect-ratio="2.75"
                   ></v-img>
 
                   <v-card-title primary-title>
 
-                      <h3 class="headline mb-0">Inventario</h3>
+                      <h3 class="headline mb-0">{{sistema.sistema}}</h3>
 
 
 
@@ -57,7 +57,7 @@
 
                   <v-slide-y-transition>
                     <v-card-text v-show="show">
-                      {{card_text}}
+                      {{sistema.descripcion}}
                     </v-card-text>
                   </v-slide-y-transition>
                 </v-card>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 
   export default {
 
@@ -79,21 +79,27 @@ import axios from 'axios'
       source: String,
     },
     data: () => ({
+      sistemas: [],
       drawer: null,
       image: {
         background: require('./../assets/background.jpg'),
-        manufacturing_inventory: require('./../assets/manufacturing-inventory.jpg')
+        Inventario: require('./../assets/manufacturing-inventory.jpg'),
       },
       alert: {
         type: "info",
         model: false,
-        text: ""
+        text: '',
       },
       show: false,
       card_text: 'El inventario representa la existencia de bienes almacenados destinados a  realizar una operación, sea de compra, alquiler, venta, uso o transformación. Debe aparecer, contablemente, dentro del activo como un activo circulante.',
 
     }),
+
+    created() {
+      this.sistemas = this.$store.getters.sistemas;
+    },
     methods: {
+
       async logout() {
         try {
           var token = await axios({
@@ -111,7 +117,7 @@ import axios from 'axios'
           this.alert.text = e,
           this.alert.model = true
         } finally {
-          this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token.data.data.logout;
+          this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token.data.data.logout
           this.$router.push('/')
 
         }

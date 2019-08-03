@@ -6,15 +6,22 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     tableDense: false,
-    role: {},
+    role: {
+      permisos: [],
+    },
+    currentSis: null,
   },
   mutations: {
     changeDense(state, tableDense) {
-      state.tableDense = tableDense
+      state.tableDense = tableDense;
     },
 
     setRole(state, role) {
-      state.role = role
+      state.role = role;
+    },
+
+    setCS(state, nSis){
+      state.currentSis = nSis;
     },
   },
   actions: {
@@ -22,6 +29,7 @@ export default new Vuex.Store({
   },
   getters: {
   tableDense: state => state.tableDense,
-  role: state => state.role
+  role: state => state.role,
+  sistemas: state => state.role.permisos
 }
 });
