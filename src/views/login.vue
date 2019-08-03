@@ -152,6 +152,75 @@ export default {
   }),
 
   methods: {
+
+    async setRole(){
+      try {
+        var result = await axios({
+          method: "POST",
+          data: {
+            query: `
+            {
+              getRole{
+                nombre,
+                permisos{
+                  sistema,
+                  link,
+                  menu{
+                    titulo,
+                    menu,
+                    sub{
+                      tipo,
+                      titulo,
+                      link,
+                      href,
+                      target,
+                      c,
+                      r,
+                      u,
+                      d,
+                      a,
+                      sub{
+                         tipo,
+                        titulo,
+                        link,
+                        href,
+                        target,
+                        c,
+                        r,
+                        u,
+                        d,
+                        a,
+                        sub{
+                          tipo,
+                          titulo,
+                          link,
+                          href,
+                          target,
+                          c,
+                          r,
+                          u,
+                          d,
+                          a
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+                `
+          }
+        });
+
+          this.$store.commit('setRole', result.data.data.getRole);
+          console.log(this.$store.getters.role);
+
+        return true;
+
+      } catch (e) {
+        return e
+      }
+    },
     async login() {
       try {
         this.alert.model = false
@@ -179,7 +248,15 @@ export default {
           this.alert.model = true
         }else {
           this.$http.defaults.headers.common['Authorization'] = 'Bearer '+ token.data.data.login
-          this.$router.push('/menu_sys')
+          const setR = await this.setRole();
+          if(setR === true ){
+            this.$router.push('/menu_sys')
+          }else {
+            this.alert.type = "error"
+            this.alert.text = setR
+            this.alert.model = true
+          }
+
         }
       }
     },
