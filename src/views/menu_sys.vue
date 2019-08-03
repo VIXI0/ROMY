@@ -52,7 +52,7 @@
                       <v-icon>{{ show ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn text color="blue" to="/inv_main">Ir a Sistema</v-btn>
+                    <v-btn text color="blue" @click="LoadSis(sistema.link,sistema.sistema)">Ir a Sistema</v-btn>
                   </v-card-actions>
 
                   <v-slide-y-transition>
@@ -80,6 +80,7 @@ import axios from 'axios';
     },
     data: () => ({
       sistemas: [],
+      tempSis: null,
       drawer: null,
       image: {
         background: require('./../assets/background.jpg'),
@@ -97,7 +98,18 @@ import axios from 'axios';
     created() {
       this.sistemas = this.$store.getters.sistemas;
     },
-    methods: {
+    methods:{
+
+      checkSis(sistemas){
+        return sistemas.sistema = this.tempSis;
+      },
+
+      LoadSis(link,sistema){
+        this.tempSis = sistema;
+        const index = this.sistemas.findIndex(this.checkSis);
+        this.$store.commit('setCS', index);
+        this.$router.push(link);
+      },
 
       async logout() {
         try {

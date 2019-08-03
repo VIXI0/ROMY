@@ -214,7 +214,7 @@ export default {
         });
 
           this.$store.commit('setRole', result.data.data.getRole);
-          console.log(this.$store.getters.role);
+          //console.log(this.$store.getters.role);
 
         return true;
 
