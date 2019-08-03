@@ -10,6 +10,13 @@ export default new Vuex.Store({
       permisos: [],
     },
     currentSis: null,
+    currentCRUDA: {
+      c: false,
+      r: false,
+      u: false,
+      d: false,
+      a: false,
+    },
   },
   mutations: {
     changeDense(state, tableDense) {
@@ -23,6 +30,10 @@ export default new Vuex.Store({
     setCS(state, nSis){
       state.currentSis = nSis;
     },
+
+    setCRUDA(state, CRUDA){
+      state.currentCRUDA = CRUDA;
+    },
   },
   actions: {
 
@@ -30,6 +41,8 @@ export default new Vuex.Store({
   getters: {
   tableDense: state => state.tableDense,
   role: state => state.role,
-  sistemas: state => state.role.permisos
+  sistemas: state => state.role.permisos,
+  currentSis: state => state.currentSis,
+  currentCRUDA: state => state.currentCRUDA,
 }
 });

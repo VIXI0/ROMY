@@ -9,7 +9,7 @@
 
       <v-dialog v-model="dialog" persistent scrollable max-width="600px" :overlay="false">
         <template v-slot:activator="{ on }">
-          <v-btn color="white"  v-on="on" icon :disabled="!permition.addSup">
+          <v-btn color="white"  v-on="on" icon :disabled="currentCRUDA.c">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </template>
@@ -122,6 +122,7 @@
             class="elevation-1">
             <template v-slot:item.action="{ item }">
               <v-icon
+                v-if="currentCRUDA.r"
                 small
                 class="mr-2"
                 @click="viewItem(item)"
@@ -129,6 +130,7 @@
                 mdi-magnify
               </v-icon>
               <v-icon
+                v-if="currentCRUDA.u"
                 small
                 class="mr-2"
                 @click="editItem(item)"
@@ -136,13 +138,17 @@
                 mdi-pencil
               </v-icon>
               <v-icon
+                v-if="currentCRUDA.a"
                 small
+                class="mr-2"
                 @click="deleteItem(item)"
               >
                 mdi-delete
               </v-icon>
               <v-icon
+              v-if="currentCRUDA.a"
               small
+              class="mr-2"
               @click="restoreItem(item)"
               >mdi-backup-restore</v-icon>
             </template>
@@ -177,8 +183,12 @@ export default {
     search: '',
     dialog: false,
     view: false,
-    permition: {
-      addSup: true
+    currentCRUDA: {
+      c: false,
+      r: false,
+      u: false,
+      d: false,
+      a: false,
     },
     headers: [{
         text: 'Nombre',
@@ -255,6 +265,7 @@ export default {
 
     created() {
       this.initialize()
+      this.currentCRUDA = this.$store.getters.currentCRUDA
     },
 
     methods: {

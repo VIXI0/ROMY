@@ -8,57 +8,57 @@
 
 
       <!-- Bmenu -->
-      <v-menu offset-y v-for="item in menuItems" :key="item.title" :close-on-content-click="false" v-model="item.menu">
+      <v-menu offset-y v-for="item in menuItems" :key="item.titulo" :close-on-content-click="false" v-model="item.menu">
         <template v-slot:activator="{on}">
-          <v-btn outlined dark text v-on="on" class="mx-1">{{item.title}}</v-btn>
+          <v-btn outlined dark text v-on="on" class="mx-1">{{item.titulo}}</v-btn>
         </template>
         <v-list>
 
           <template v-for="sub in item.sub">
 
-                  <template v-if="sub.type === 'i'">
+                  <template v-if="sub.tipo === 'i'">
 
-                          <v-list-item :key="sub.title" @click="item.menu = false" :to="sub.link" :href="sub.href" :target="sub.target">
-                            <v-list-item-title>{{sub.title}}</v-list-item-title>
+                          <v-list-item :key="sub.titulo" @click="item.menu = false, loadCRUDA(sub)" :to="sub.link" :href="sub.href" :target="sub.target">
+                            <v-list-item-title>{{sub.titulo}}</v-list-item-title>
                             <v-chip small v-if="sub.chip === 'new'" color="success" text-color="white">new</v-chip>
                             <v-chip small v-if="sub.chip === 'fixing'" color="red" text-color="white">fixing</v-chip>
                           </v-list-item>
 
                   </template>
 
-                  <template v-else-if="sub.type === 'g'">
+                  <template v-else-if="sub.tipo === 'g'">
 
-                          <v-list-group :key="sub.title">
+                          <v-list-group :key="sub.titulo">
 
                                   <template v-slot:activator>
                                     <v-list-item>
-                                      <v-list-item-title>{{sub.title}}</v-list-item-title>
+                                      <v-list-item-title>{{sub.titulo}}</v-list-item-title>
                                     </v-list-item>
                                   </template>
                                   <template v-for="sub2 in sub.sub">
 
-                                    <template v-if="sub2.type === 'i'">
+                                    <template v-if="sub2.tipo === 'i'">
 
-                                        <v-list-item :key="sub2.title" @click="item.menu = false"  :to="sub2.link" :href="sub2.href" :target="sub2.target">
-                                          <v-list-item-title >{{sub2.title}}</v-list-item-title>
+                                        <v-list-item :key="sub2.titulo" @click="item.menu = false, loadCRUDA(sub2)"  :to="sub2.link" :href="sub2.href" :target="sub2.target">
+                                          <v-list-item-title >{{sub2.titulo}}</v-list-item-title>
                                           <v-chip small v-if="sub.chip === 'new'" color="success" text-color="white">new</v-chip>
                                           <v-chip small v-if="sub.chip === 'fixing'" color="red" text-color="white">fixing</v-chip>
                                         </v-list-item>
 
                                     </template>
 
-                                    <template v-if="sub2.type === 'sg'">
+                                    <template v-if="sub2.tipo === 'sg'">
 
-                                          <v-list-group no-action sub-group :key="sub2.title">
+                                          <v-list-group no-action sub-group :key="sub2.titulo">
                                                 <template v-slot:activator>
                                                  <v-list-item >
-                                                   <v-list-item-title>{{sub2.title}}</v-list-item-title>
+                                                   <v-list-item-title>{{sub2.titulo}}</v-list-item-title>
                                                  </v-list-item>
                                                 </template>
 
                                                 <template v-for="sub3 in sub2.sub">
-                                                       <v-list-item :key="sub3.title" @click="item.menu = false" :to="sub3.link" :href="sub3.href" :target="sub3.target">
-                                                         <v-list-item-title  >{{sub3.title}}</v-list-item-title>
+                                                       <v-list-item :key="sub3.titulo" @click="item.menu = false, loadCRUDA(sub3)" :to="sub3.link" :href="sub3.href" :target="sub3.target">
+                                                         <v-list-item-title  >{{sub3.titulo}}</v-list-item-title>
                                                          <v-chip small v-if="sub.chip === 'new'" color="success" text-color="white">new</v-chip>
                                                          <v-chip small v-if="sub.chip === 'fixing'" color="red" text-color="white">fixing</v-chip>
                                                        </v-list-item>
@@ -188,7 +188,8 @@ export default {
     },
     user: '',
     menu: false,
-    menuItems: [
+    menuItems: [],
+    menuDELETED: [
       //type g = to group && type sg = sub-group && type i = to item  // sub = submenu || subitem
       //layout [  { title: '', menu: '', sub:[{}]}  ] [  {type: 'i', title: '', link: '', href: ''}  ]
       {title: 'Mantenimiento', menu: false, sub: [
@@ -211,6 +212,7 @@ export default {
   }),
 
   created() {
+    this.menuItems = this.$store.getters.sistemas[this.$store.getters.currentSis].menu
     this.initialize()
   },
 
@@ -221,6 +223,18 @@ export default {
   },
 
   methods: {
+    loadCRUDA(sub){
+      const CRUDA = {
+        c: sub.c,
+        r: sub.r,
+        u: sub.u,
+        d: sub.d,
+        a: sub.a
+      }
+
+      this.$store.commit('setCRUDA', CRUDA);
+      console.log(CRUDA);
+    },
     async initialize() {
 
       try {
