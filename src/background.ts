@@ -1,10 +1,13 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, globalShortcut } from 'electron'
 import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
+
+const { autoUpdater } = require("electron-updater")
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -83,7 +86,16 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }
+  autoUpdater.checkForUpdatesAndNotify()
   createWindow()
+
+  globalShortcut.register('CommandOrControl+F', () => {
+  if(win.isFullScreen()){
+    win.setFullScreen(false)
+  }else{
+    win.setFullScreen(true)
+  }
+})
 })
 
 

@@ -1,10 +1,10 @@
 {
   "name": "ROM",
-  "version": "2.5.4",
+  "version": "2.5.5",
   "description": "core_management",
   "author": "Miguel Rodriguez",
   "private": true,
-  "repository": "git@github.com:VIXI0/core_power_updates.git",
+  "repository": "git@github.com:VIXI0/ROM_soft.git",
   "nsis": {
     "createStartMenuShortcut": true,
     "include": "build/installer.nsh",

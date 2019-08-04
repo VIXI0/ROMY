@@ -164,7 +164,6 @@ export default {
                 nombre,
                 permisos{
                   sistema,
-                  descripcion,
                   link,
                   menu{
                     titulo,

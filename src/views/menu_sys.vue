@@ -57,7 +57,7 @@
 
                   <v-slide-y-transition>
                     <v-card-text v-show="show">
-                      {{sistema.descripcion}}
+                      {{descripcion[`${sistema.sistema}`]}}
                     </v-card-text>
                   </v-slide-y-transition>
                 </v-card>
@@ -82,6 +82,9 @@ import axios from 'axios';
       sistemas: [],
       tempSis: null,
       drawer: null,
+      descripcion: {
+        Inventario: "El inventario representa la existencia de bienes almacenados destinados a realizar una operación, sea de compra, alquiler, venta, uso o transformación. Debe aparecer, contablemente, dentro del activo como un activo circulante.",
+      },
       image: {
         background: require('./../assets/background.jpg'),
         Inventario: require('./../assets/manufacturing-inventory.jpg'),
