@@ -117,7 +117,7 @@
 
                   <v-list-item-content>
                     <v-list-item-title>{{user}}</v-list-item-title>
-                    <v-list-item-subtitle>no rol atribuido</v-list-item-subtitle>
+                    <v-list-item-subtitle>{{this.$store.getters.roleName}}</v-list-item-subtitle>
                   </v-list-item-content>
 
                   <v-list-item-action>

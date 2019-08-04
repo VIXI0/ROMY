@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     tableDense: false,
     role: {
+      nombre: "",
       permisos: [],
     },
     currentSis: null,
@@ -44,5 +45,6 @@ export default new Vuex.Store({
   sistemas: state => state.role.permisos,
   currentSis: state => state.currentSis,
   currentCRUDA: state => state.currentCRUDA,
+  roleName: state => state.role.nombre,
 }
 });
