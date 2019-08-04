@@ -27,6 +27,18 @@ function createWindow () {
     win.removeMenu()
   }
 
+  globalShortcut.register('CommandOrControl+F', () => {
+    if(win !== null && win !== undefined){
+      if(win.isFullScreen()){
+
+          win.setFullScreen(false);
+
+      }else{
+          win.setFullScreen(true);
+        }
+    }
+});
+
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string)
@@ -88,14 +100,6 @@ app.on('ready', async () => {
   }
   autoUpdater.checkForUpdatesAndNotify()
   createWindow()
-
-  globalShortcut.register('CommandOrControl+F', () => {
-  if(win.isFullScreen()){
-    win.setFullScreen(false)
-  }else{
-    win.setFullScreen(true)
-  }
-})
 })
 
 
