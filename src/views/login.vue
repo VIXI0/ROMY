@@ -61,7 +61,7 @@ offset-y left
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-btn
-                    href="https://github.com/VIXI0"
+                    href="https://github.com/VIXI0" 
                     icon
                     large
                     target="_blank"
