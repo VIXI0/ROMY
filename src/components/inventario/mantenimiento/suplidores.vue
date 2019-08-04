@@ -9,7 +9,7 @@
 
       <v-dialog v-model="dialog" persistent scrollable max-width="600px" :overlay="false">
         <template v-slot:activator="{ on }">
-          <v-btn color="white"  v-on="on" icon :disabled="currentCRUDA.c">
+          <v-btn color="white"  v-on="on" icon v-show="currentCRUDA.c">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </template>
@@ -120,9 +120,14 @@
             :loading="tableLoading"
             multi-sort
             class="elevation-1">
+
+            <template v-slot:item.active="{ item }">
+              <v-chip small :color="getColor(item.active)" dark>{{ getActive(item.active) }}</v-chip>
+            </template>
+
             <template v-slot:item.action="{ item }">
               <v-icon
-                v-if="currentCRUDA.r"
+                v-show="currentCRUDA.r"
                 small
                 class="mr-2"
                 @click="viewItem(item)"
@@ -130,27 +135,37 @@
                 mdi-magnify
               </v-icon>
               <v-icon
-                v-if="currentCRUDA.u"
+                v-show="currentCRUDA.u"
                 small
                 class="mr-2"
                 @click="editItem(item)"
               >
                 mdi-pencil
               </v-icon>
-              <v-icon
-                v-if="currentCRUDA.a"
+
+              <template v-if="item.active">
+                <v-icon
+                  v-show="currentCRUDA.a"
+                  small
+                  class="mr-2"
+                  @click="deleteItem(item)"
+                >
+                  mdi-delete
+                </v-icon>
+              </template>
+
+              <template v-else>
+                <v-icon
+                v-show="currentCRUDA.a"
                 small
                 class="mr-2"
-                @click="deleteItem(item)"
-              >
-                mdi-delete
-              </v-icon>
-              <v-icon
-              v-if="currentCRUDA.a"
-              small
-              class="mr-2"
-              @click="restoreItem(item)"
-              >mdi-backup-restore</v-icon>
+                @click="restoreItem(item)"
+                >mdi-backup-restore</v-icon>
+              </template>
+
+
+
+
             </template>
         </v-data-table>
         </v-flex>
@@ -232,7 +247,8 @@ export default {
       ncf: '',
       Representante: '',
       telefonor: "",
-      anotaciones:""
+      anotaciones:"",
+      active: true,
     },
     defaultItem: {
       nombre: '',
@@ -242,7 +258,8 @@ export default {
       ncf: '',
       Representante: '',
       telefonor: "",
-      anotaciones: ""
+      anotaciones: "",
+      active: true,
     }
   }),
 
@@ -264,8 +281,16 @@ export default {
     },
 
     created() {
-      this.initialize()
-      this.currentCRUDA = this.$store.getters.currentCRUDA
+      this.initialize();
+      this.currentCRUDA = this.$store.getters.currentCRUDA;
+
+      if(this.currentCRUDA.a === true){
+        this.headers.splice(4, 0, {
+          text: 'Activo',
+          value: 'active',
+        });
+      }
+
     },
 
     methods: {
@@ -287,7 +312,8 @@ export default {
                             ncf,
                             Representante,
                             telefonor,
-                            anotaciones
+                            anotaciones,
+                            active
                           }
                         }
                   `
@@ -359,7 +385,8 @@ export default {
 
       close() {
         this.view = false,
-          this.dialog = false
+          this.dialog = false,
+          this.alert_dialog.model = false,
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
@@ -440,7 +467,16 @@ export default {
       },
       pushEnter(){
         this.editedItem.anotaciones.concat("");
-      }
+      },
+      getColor (active) {
+        if (active) return 'green'
+        else return 'red'
+      },
+
+      getActive(active){
+        if(active) return 'A'
+        else return 'I'
+      },
     }
 }
 </script>

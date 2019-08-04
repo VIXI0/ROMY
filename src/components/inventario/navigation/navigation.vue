@@ -212,8 +212,9 @@ export default {
   }),
 
   created() {
-    this.menuItems = this.$store.getters.sistemas[this.$store.getters.currentSis].menu
-    this.initialize()
+    this.menuItems = this.$store.getters.sistemas[this.$store.getters.currentSis].menu;
+    this.tableDense = this.$store.getters.tableDense;
+    this.initialize();
   },
 
   watch: {
@@ -233,7 +234,7 @@ export default {
       }
 
       this.$store.commit('setCRUDA', CRUDA);
-      console.log(CRUDA);
+      //console.log(CRUDA);
     },
     async initialize() {
 

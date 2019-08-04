@@ -77,7 +77,7 @@ offset-y left
                   <v-btn
                     icon
                     large
-                    href="https://vixi0.github.io/core_power_updates/"
+                    href="https://vixi0.github.io/ROM_soft/"
                     target="_blank"
                     v-on="on"
                   >
