@@ -9,7 +9,7 @@
 
       <v-dialog v-model="dialog" persistent scrollable max-width="600px" :overlay="false">
         <template v-slot:activator="{ on }">
-          <v-btn color="white"  v-on="on" icon v-show="currentCRUDA.c">
+          <v-btn color="white"  v-on="on" icon v-show="$store.getters.currentC">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </template>
@@ -127,7 +127,7 @@
 
             <template v-slot:item.action="{ item }">
               <v-icon
-                v-show="currentCRUDA.r"
+                v-show="$store.getters.currentR"
                 small
                 class="mr-2"
                 @click="viewItem(item)"
@@ -135,7 +135,7 @@
                 mdi-magnify
               </v-icon>
               <v-icon
-                v-show="currentCRUDA.u"
+                v-show="$store.getters.currentU"
                 small
                 class="mr-2"
                 @click="editItem(item)"
@@ -145,7 +145,7 @@
 
               <template v-if="item.active">
                 <v-icon
-                  v-show="currentCRUDA.a"
+                  v-show="$store.getters.currentA"
                   small
                   class="mr-2"
                   @click="deleteItem(item)"
@@ -156,7 +156,7 @@
 
               <template v-else>
                 <v-icon
-                v-show="currentCRUDA.a"
+                v-show="$store.getters.currentA"
                 small
                 class="mr-2"
                 @click="restoreItem(item)"
@@ -281,15 +281,11 @@ export default {
     },
 
     created() {
-      this.initialize();
-      this.currentCRUDA = this.$store.getters.currentCRUDA;
+      //this.currentCRUDA = this.$store.getters.currentCRUDA;
 
-      if(this.currentCRUDA.a === true){
-        this.headers.splice(4, 0, {
-          text: 'Activo',
-          value: 'active',
-        });
-      }
+
+
+        this.initialize();
 
     },
 
@@ -324,6 +320,14 @@ export default {
           this.alert.text = e
           this.alert.model = true
         } finally {
+          
+          if(this.$store.getters.currentA === true){
+            this.headers.splice(4, 0, {
+              text: 'Activo',
+              value: 'active',
+            });
+          }
+
           this.Suplidores = result.data.data.Suplidores
           this.tableLoading = false
         }
@@ -345,7 +349,7 @@ export default {
 
       },
 
-      deleteItem(item){
+      async deleteItem(item){
                   const options = {
               type: 'question',
               buttons: ['Cancelar', 'Si, Seguro'],
@@ -358,13 +362,52 @@ export default {
               //checkboxLabel: 'Remember my answer',
               //checkboxChecked: true,
             };
-            dialog.showMessageBox(null, options, (response/*, checkboxChecked*/) => {
+            dialog.showMessageBox(null, options, async (response/*, checkboxChecked*/) => {
             //console.log(response);
             //console.log(checkboxChecked);
+
+            if(response === 1){
+              this.tableLoading = true;
+
+              try {
+                //console.log(item);
+                var result = await axios({
+                              method: "POST",
+                              data: {
+                                query: `
+                                  mutation {
+                                    updateSuplidor(_id: "${item._id}", input: {
+                                      active: false
+                                    })
+                                  }
+                                  `
+                              }
+                            })
+                if ( result.data.data.updateSuplidor ) {
+                  const index = this.Suplidores.indexOf(item)
+                  item.active = false;
+                  Object.assign(this.Suplidores[index], item)
+                  this.tableLoading = false
+                }else {
+                  this.tableLoading = false
+                  this.alert.type = "error"
+                  this.alert.text = result.data.error.errors.message
+                  this.alert.model = true
+                }
+              } catch (e) {
+                this.tableLoading = false
+                this.alert.type = "error"
+                this.alert.text = e
+                this.alert.model = true
+              }
+
+
+            }
+
               });
       },
 
-      restoreItem(item){
+      async restoreItem(item){
                   const options = {
               type: 'question',
               buttons: ['Cancelar', 'Si, Seguro'],
@@ -377,9 +420,48 @@ export default {
               //checkboxLabel: 'Remember my answer',
               //checkboxChecked: true,
             };
-            dialog.showMessageBox(null, options, (response/*, checkboxChecked*/) => {
+            dialog.showMessageBox(null, options, async (response/*, checkboxChecked*/) => {
             //console.log(response);
             //console.log(checkboxChecked);
+
+            if(response === 1){
+              this.tableLoading = true;
+
+              try {
+                //console.log(item);
+                var result = await axios({
+                              method: "POST",
+                              data: {
+                                query: `
+                                  mutation {
+                                    updateSuplidor(_id: "${item._id}", input: {
+                                      active: true
+                                    })
+                                  }
+                                  `
+                              }
+                            })
+                if ( result.data.data.updateSuplidor ) {
+                  const index = this.Suplidores.indexOf(item)
+                  item.active = true;
+                  Object.assign(this.Suplidores[index], item)
+                  this.tableLoading = false
+                }else {
+                  this.tableLoading = false
+                  this.alert.type = "error"
+                  this.alert.text = result.data.error.errors.message
+                  this.alert.model = true
+                }
+              } catch (e) {
+                this.tableLoading = false
+                this.alert.type = "error"
+                this.alert.text = e
+                this.alert.model = true
+              }
+
+
+            }
+
               });
   },
 
@@ -388,8 +470,8 @@ export default {
           this.dialog = false,
           this.alert_dialog.model = false,
         setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
+          this.editedItem = Object.assign({}, this.defaultItem);
+          this.editedIndex = -1;
         }, 300)
       },
 
@@ -398,67 +480,108 @@ export default {
         if (this.editedIndex > -1) {
           // edita Suplidor
 
-          var result = await axios({
-                        method: "POST",
-                        data: {
-                          query: `
-                            mutation {
-                              updateSuplidor(_id: "${this.editedItem._id}", input: {
-                                nombre: "${this.editedItem.nombre}",
-                                direccion: "${this.editedItem.direccion}",
-                                telefono: ["${this.editedItem.telefono}"],
-                                rnc: "${this.editedItem.rnc}",
-                                ncf: "${this.editedItem.ncf}",
-                                Representante: "${this.editedItem.Representante}",
-                                telefonor: ["${this.editedItem.telefonor}"],
-                                anotaciones: """${this.editedItem.anotaciones}"""
-                              })
+          try {
+            var result;
+
+            if(this.editedItem.active === null || this.editedItem.active === undefined || this.editedItem.active === false){
+              result = await axios({
+                            method: "POST",
+                            data: {
+                              query: `
+                                mutation {
+                                  updateSuplidor(_id: "${this.editedItem._id}", input: {
+                                    nombre: "${this.editedItem.nombre}",
+                                    direccion: "${this.editedItem.direccion}",
+                                    telefono: ["${this.editedItem.telefono}"],
+                                    rnc: "${this.editedItem.rnc}",
+                                    ncf: "${this.editedItem.ncf}",
+                                    Representante: "${this.editedItem.Representante}",
+                                    telefonor: ["${this.editedItem.telefonor}"],
+                                    anotaciones: """${this.editedItem.anotaciones}""",
+                                    active: false
+                                  })
+                                }
+                                `
                             }
-                            `
-                        }
-                      })
-          if ( result.data.data.updateSuplidor ) {
-            Object.assign(this.Suplidores[this.editedIndex], this.editedItem)
-            this.cardLoading = false
-            this.close()
-          }else {
-            this.cardLoading = false
-            this.alert_dialog.type = "error"
-            this.alert_dialog.text = result.data.error.errors.message
-            this.alert_dialog.model = true
+                          })
+            }else {
+              result = await axios({
+                            method: "POST",
+                            data: {
+                              query: `
+                                mutation {
+                                  updateSuplidor(_id: "${this.editedItem._id}", input: {
+                                    nombre: "${this.editedItem.nombre}",
+                                    direccion: "${this.editedItem.direccion}",
+                                    telefono: ["${this.editedItem.telefono}"],
+                                    rnc: "${this.editedItem.rnc}",
+                                    ncf: "${this.editedItem.ncf}",
+                                    Representante: "${this.editedItem.Representante}",
+                                    telefonor: ["${this.editedItem.telefonor}"],
+                                    anotaciones: """${this.editedItem.anotaciones}""",
+                                    active: true
+                                  })
+                                }
+                                `
+                            }
+                          })
+            }
+
+            if ( result.data.data.updateSuplidor ) {
+              Object.assign(this.Suplidores[this.editedIndex], this.editedItem);
+              this.cardLoading = false;
+              this.close();
+            }else {
+              this.cardLoading = false;
+              this.alert_dialog.type = "error";
+              this.alert_dialog.text = result.data.error.errors.message;
+              this.alert_dialog.model = true;
+            }
+          } catch (e) {
+            this.cardLoading = false;
+            this.alert_dialog.type = "error";
+            this.alert_dialog.text = e;
+            this.alert_dialog.model = true;
           }
 
         } else {
 
-          var result = await axios({
-            method: "POST",
-            data: {
-              query: `
-                mutation {
-                        createSuplidor(input: {
-                          nombre: "${this.editedItem.nombre}",
-                          direccion: "${this.editedItem.direccion}",
-                          telefono: ["${this.editedItem.telefono}"],
-                          rnc: "${this.editedItem.rnc}",
-                          ncf: "${this.editedItem.ncf}",
-                          Representante: "${this.editedItem.Representante}",
-                          telefonor: ["${this.editedItem.telefonor}"],
-                          anotaciones: """${this.editedItem.anotaciones}""",
-                          active: true
-                        } )
-                        }
-                `
+          try {
+            var result = await axios({
+              method: "POST",
+              data: {
+                query: `
+                  mutation {
+                          createSuplidor(input: {
+                            nombre: "${this.editedItem.nombre}",
+                            direccion: "${this.editedItem.direccion}",
+                            telefono: ["${this.editedItem.telefono}"],
+                            rnc: "${this.editedItem.rnc}",
+                            ncf: "${this.editedItem.ncf}",
+                            Representante: "${this.editedItem.Representante}",
+                            telefonor: ["${this.editedItem.telefonor}"],
+                            anotaciones: """${this.editedItem.anotaciones}""",
+                            active: true
+                          } )
+                          }
+                  `
+              }
+            })
+            if ( result.data.data.createSuplidor ) {
+              this.Suplidores.push(this.editedItem);
+              this.cardLoading = false;
+              this.close();
+            }else {
+              this.cardLoading = false;
+              this.alert_dialog.type = "error";
+              this.alert_dialog.text = result.data.data.createSuplidor;
+              this.alert_dialog.model = true;
             }
-          })
-          if ( result.data.data.createSuplidor ) {
-            this.Suplidores.push(this.editedItem)
-            this.cardLoading = false
-            this.close()
-          }else {
-            this.cardLoading = false
-            this.alert_dialog.type = "error"
-            this.alert_dialog.text = result.data.data.createSuplidor
-            this.alert_dialog.model = true
+          } catch (e) {
+            this.cardLoading = false;
+            this.alert_dialog.type = "error";
+            this.alert_dialog.text = e;
+            this.alert_dialog.model = true;
           }
 
         }

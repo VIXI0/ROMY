@@ -44,7 +44,12 @@ export default new Vuex.Store({
   role: state => state.role,
   sistemas: state => state.role.permisos,
   currentSis: state => state.currentSis,
-  currentCRUDA: state => state.currentCRUDA,
+  currentC: state => state.currentCRUDA.c,
+  currentR: state => state.currentCRUDA.r,
+  currentU: state => state.currentCRUDA.u,
+  currentD: state => state.currentCRUDA.d,
+  currentA: state => state.currentCRUDA.a,
+
   roleName: state => state.role.nombre,
 }
 });
