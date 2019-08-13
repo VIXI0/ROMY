@@ -74,7 +74,7 @@ offset-y left
                 </template>
                 <span>Creador</span>
               </v-tooltip>
-              <v-tooltip right>
+              <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                   <v-btn
                     icon
@@ -86,7 +86,7 @@ offset-y left
                     <v-icon>mdi-book</v-icon>
                   </v-btn>
                 </template>
-                <span>Manual</span>
+                <span>Entrenamiento</span>
               </v-tooltip>
             </v-toolbar>
             <div class="ma-1">
