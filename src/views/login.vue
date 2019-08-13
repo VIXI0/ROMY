@@ -49,6 +49,8 @@ offset-y left
           xs12
           sm8
           md4
+          lg3
+          xl3
         >
           <v-card class="elevation-12" :loading="loading">
             <v-toolbar
