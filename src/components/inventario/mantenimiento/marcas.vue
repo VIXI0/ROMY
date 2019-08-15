@@ -43,43 +43,6 @@
                 <v-flex>
                   <v-text-field label="Nombre" v-model="editedItem.nombre" :filled="view" :readonly="view" autofocus></v-text-field>
                 </v-flex>
-                <v-flex>
-                  <v-text-field label="Direccion" v-model="editedItem.direccion" :filled="view" :readonly="view"></v-text-field>
-                </v-flex>
-                <v-flex>
-                  <v-text-field v-mask="'(###) ### - ####'" label="Telefono" v-model="editedItem.telefono" :filled="view" :readonly="view"></v-text-field>
-                </v-flex>
-                <v-flex>
-                  <v-text-field v-mask="'### - ##### - #'" label="RNC" :filled="view" :readonly="view" v-model="editedItem.rnc"></v-text-field>
-                </v-flex>
-                <v-flex>
-                  <v-text-field v-mask="'A##########'" label="Numero Comprobante Fiscal (NCF)" v-model="editedItem.ncf" :filled="view" :readonly="view"></v-text-field>
-                </v-flex>
-
-
-                <v-flex xs12>
-                  <h3>Representante</h3>
-                  <v-divider></v-divider>
-                </v-flex>
-
-
-                <v-flex>
-                  <v-text-field label="Nombre" v-model="editedItem.Representante" :filled="view" :readonly="view"></v-text-field>
-                </v-flex>
-                <v-flex>
-                  <v-text-field v-mask="'(###) ### - ####'" label="Telefono" v-model="editedItem.telefonor" :filled="view" :readonly="view"></v-text-field>
-                </v-flex>
-
-
-                <v-flex xs12>
-                  <h3>Anotaciones</h3>
-                  <v-divider></v-divider>
-                </v-flex>
-
-
-                <v-flex>
-                  <v-textarea v-model="editedItem.anotaciones" outlined name="input-7-4" label="Anotaciones" value="" :filled="view" :readonly="view" @keyup.enter="pushEnter"></v-textarea>
-                </v-flex>
 
               </v-layout>
             </v-container>
@@ -113,7 +76,7 @@
         <v-flex xs12>
           <v-data-table
             :headers="headers"
-            :items="Suplidores"
+            :items="marcas"
             :sort-desc="[false, true]"
             :search="search"
             :dense="this.$store.getters.tableDense"
@@ -198,67 +161,28 @@ export default {
     search: '',
     dialog: false,
     view: false,
-    currentCRUDA: {
-      c: false,
-      r: false,
-      u: false,
-      d: false,
-      a: false,
-    },
-    headers: [{
+
+    headers: [
+      {
         text: 'Nombre',
-        align: 'left',
-        sortable: true,
         value: 'nombre'
       },
-      {
-        text: 'Direccion',
-        value: 'direccion'
-      },
-      /*{
-        text: 'Telefono',
-        value: 'telefono'
-      },*/
-      {
-        text: 'NCF',
-        value: 'ncf'
-      },
-      {
-        text: 'Representante',
-        value: 'Representante'
-      },
-      /*{
-        text: 'Telefono',
-        value: 'telefonor'
-      },*/
       {
         text: 'Actions',
         value: 'action',
         sortable: false
       }
     ],
-    Suplidores: [],
+    marcas: [],
     editedIndex: -1,
     editedItem: {
+      _id: '',
       nombre: '',
-      direccion: '',
-      telefono: "",
-      rnc: '',
-      ncf: '',
-      Representante: '',
-      telefonor: "",
-      anotaciones:"",
       active: true,
     },
     defaultItem: {
+      _id: '',
       nombre: '',
-      direccion: '',
-      telefono: "",
-      rnc: '',
-      ncf: '',
-      Representante: '',
-      telefonor: "",
-      anotaciones: "",
       active: true,
     }
   }),
@@ -266,9 +190,9 @@ export default {
     computed: {
       formTitle() {
         if (this.editedIndex === -1) {
-          return 'Nuevo Suplidor'
+          return 'Nuevo Marca'
         } else {
-          return this.view === true ? 'Mostrar Suplidor' : 'Editar Suplidor'
+          return this.view === true ? 'Mostrar Marca' : 'Editar Marca'
         }
 
       }
@@ -299,16 +223,9 @@ export default {
             data: {
               query: `
                         {
-                          Suplidores{
+                          marcas{
                             _id,
                             nombre,
-                            direccion,
-                            telefono,
-                            rnc,
-                            ncf,
-                            Representante,
-                            telefonor,
-                            anotaciones,
                             active
                           }
                         }
@@ -322,13 +239,13 @@ export default {
         } finally {
 
           if(this.$store.getters.currentA === true){
-            this.headers.splice(4, 0, {
+            this.headers.splice(1, 0, {
               text: 'Activo',
               value: 'active',
             });
           }
 
-          this.Suplidores = result.data.data.Suplidores
+          this.marcas = result.data.data.marcas
           this.tableLoading = false
         }
 
@@ -336,14 +253,14 @@ export default {
 
       editItem(item) {
         this.view = false,
-          this.editedIndex = this.Suplidores.indexOf(item)
+          this.editedIndex = this.marcas.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       viewItem(item) {
         this.view = true,
-          this.editedIndex = this.Suplidores.indexOf(item)
+          this.editedIndex = this.marcas.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
 
@@ -357,7 +274,7 @@ export default {
               noLink: true,
               cancelId: 0,
               title: 'Confirmacion',
-              message: 'Seguro que quieres inactivar suplidor',
+              message: 'Seguro que quieres inactivar marca',
               detail: 'Para activarlo nuevamente consulte a su administrador',
               //checkboxLabel: 'Remember my answer',
               //checkboxChecked: true,
@@ -376,17 +293,17 @@ export default {
                               data: {
                                 query: `
                                   mutation {
-                                    updateSuplidor(_id: "${item._id}", input: {
+                                    updateMarca(_id: "${item._id}", input: {
                                       active: false
                                     })
                                   }
                                   `
                               }
                             })
-                if ( result.data.data.updateSuplidor ) {
-                  const index = this.Suplidores.indexOf(item)
+                if ( result.data.data.updateMarca ) {
+                  const index = this.marcas.indexOf(item)
                   item.active = false;
-                  Object.assign(this.Suplidores[index], item)
+                  Object.assign(this.marcas[index], item)
                   this.tableLoading = false
                 }else {
                   this.tableLoading = false
@@ -415,7 +332,7 @@ export default {
               noLink: true,
               cancelId: 0,
               title: 'Confirmacion',
-              message: 'Seguro que quieres activar suplidor',
+              message: 'Seguro que quieres activar marca',
               detail: 'Para desactivarlo nuevamente consulte a su administrador',
               //checkboxLabel: 'Remember my answer',
               //checkboxChecked: true,
@@ -434,17 +351,17 @@ export default {
                               data: {
                                 query: `
                                   mutation {
-                                    updateSuplidor(_id: "${item._id}", input: {
+                                    updateMarca(_id: "${item._id}", input: {
                                       active: true
                                     })
                                   }
                                   `
                               }
                             })
-                if ( result.data.data.updateSuplidor ) {
-                  const index = this.Suplidores.indexOf(item)
+                if ( result.data.data.updateMarca ) {
+                  const index = this.marcas.indexOf(item)
                   item.active = true;
-                  Object.assign(this.Suplidores[index], item)
+                  Object.assign(this.marcas[index], item)
                   this.tableLoading = false
                 }else {
                   this.tableLoading = false
@@ -478,7 +395,7 @@ export default {
       async save() {
         this.cardLoading = true
         if (this.editedIndex > -1) {
-          // edita Suplidor
+          // edita marca
 
           try {
             var result;
@@ -489,15 +406,8 @@ export default {
                             data: {
                               query: `
                                 mutation {
-                                  updateSuplidor(_id: "${this.editedItem._id}", input: {
+                                  updateMarca(_id: "${this.editedItem._id}", input: {
                                     nombre: "${this.editedItem.nombre}",
-                                    direccion: "${this.editedItem.direccion}",
-                                    telefono: ["${this.editedItem.telefono}"],
-                                    rnc: "${this.editedItem.rnc}",
-                                    ncf: "${this.editedItem.ncf}",
-                                    Representante: "${this.editedItem.Representante}",
-                                    telefonor: ["${this.editedItem.telefonor}"],
-                                    anotaciones: """${this.editedItem.anotaciones}""",
                                     active: false
                                   })
                                 }
@@ -510,15 +420,8 @@ export default {
                             data: {
                               query: `
                                 mutation {
-                                  updateSuplidor(_id: "${this.editedItem._id}", input: {
+                                  updateMarca(_id: "${this.editedItem._id}", input: {
                                     nombre: "${this.editedItem.nombre}",
-                                    direccion: "${this.editedItem.direccion}",
-                                    telefono: ["${this.editedItem.telefono}"],
-                                    rnc: "${this.editedItem.rnc}",
-                                    ncf: "${this.editedItem.ncf}",
-                                    Representante: "${this.editedItem.Representante}",
-                                    telefonor: ["${this.editedItem.telefonor}"],
-                                    anotaciones: """${this.editedItem.anotaciones}""",
                                     active: true
                                   })
                                 }
@@ -527,8 +430,8 @@ export default {
                           })
             }
 
-            if ( result.data.data.updateSuplidor ) {
-              Object.assign(this.Suplidores[this.editedIndex], this.editedItem);
+            if ( result.data.data.updateMarca ) {
+              Object.assign(this.marcas[this.editedIndex], this.editedItem);
               this.cardLoading = false;
               this.close();
             }else {
@@ -552,29 +455,22 @@ export default {
               data: {
                 query: `
                   mutation {
-                          createSuplidor(input: {
+                          createMarca(input: {
                             nombre: "${this.editedItem.nombre}",
-                            direccion: "${this.editedItem.direccion}",
-                            telefono: ["${this.editedItem.telefono}"],
-                            rnc: "${this.editedItem.rnc}",
-                            ncf: "${this.editedItem.ncf}",
-                            Representante: "${this.editedItem.Representante}",
-                            telefonor: ["${this.editedItem.telefonor}"],
-                            anotaciones: """${this.editedItem.anotaciones}""",
                             active: true
                           } )
                           }
                   `
               }
             })
-            if ( result.data.data.createSuplidor ) {
-              this.Suplidores.push(this.editedItem);
+            if ( result.data.data.createMarca ) {
+              this.marcas.push(this.editedItem);
               this.cardLoading = false;
               this.close();
             }else {
               this.cardLoading = false;
               this.alert_dialog.type = "error";
-              this.alert_dialog.text = result.data.data.createSuplidor;
+              this.alert_dialog.text = result.data.data.createMarca;
               this.alert_dialog.model = true;
             }
           } catch (e) {
@@ -588,9 +484,7 @@ export default {
 
 
       },
-      pushEnter(){
-        this.editedItem.anotaciones.concat("");
-      },
+
       getColor (active) {
         if (active) return 'green'
         else return 'red'
