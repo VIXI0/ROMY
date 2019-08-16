@@ -6,6 +6,7 @@ import inv_main from './components/inventario/navigation/navigation.vue';
 import inv_welcome from './components/inventario/welcome/welcome.vue';
 import inv_suplidores from './components/inventario/mantenimiento/suplidores.vue';
 import inv_marcas from './components/inventario/mantenimiento/marcas.vue';
+import inv_productos from './components/inventario/mantenimiento/productos.vue';
 
 Vue.use(Router);
 
@@ -47,12 +48,18 @@ export default new Router({
             component: inv_suplidores
           },
 
-
           {
             path: '/inv_marcas',
             name: 'inv_marcas',
             component: inv_marcas
           },
+
+          {
+            path: '/inv_productos',
+            name: 'inv_productos',
+            component: inv_productos
+          },
+
       ]
     }
   ],

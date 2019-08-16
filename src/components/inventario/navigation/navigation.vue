@@ -189,7 +189,7 @@ export default {
     user: '',
     menu: false,
     menuItems: [],
-    menuDELETED: [
+    /*menuDELETED: [
       //type g = to group && type sg = sub-group && type i = to item  // sub = submenu || subitem
       //layout [  { title: '', menu: '', sub:[{}]}  ] [  {type: 'i', title: '', link: '', href: ''}  ]
       {title: 'Mantenimiento', menu: false, sub: [
@@ -208,7 +208,7 @@ export default {
       {title: 'Ayuda',menu: false, sub: [  {type: 'i', title: 'item', link: '', href: ''}, {type: 'i', title: 'item2', link: '', href: ''}  ] }
 
 
-    ],
+    ],*/
   }),
 
   created() {
