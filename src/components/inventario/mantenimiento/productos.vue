@@ -55,10 +55,24 @@
                 <v-autocomplete  :filled="view" :readonly="view" :items="marcas"  item-text="nombre" label="marca" v-model="editedItem.marca"></v-autocomplete>
               </v-flex>
               <v-flex md6>
-
-                <v-img :src="getImg(editedItem.image)">
-                  <input v-if="!view" type="file" accept="image/*" @change="uploadPhoto" label="Seleccionar Foto" style="height: 150px;">
+<!--
+                <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" >
                 </v-img>
+-->
+                <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" lazy-src="./../../../assets/loading.jpg"  aspect-ratio="1"  class="grey lighten-2">
+
+                    <input id="upload" type="file" accept="image/*" @change="to_upload" label="Seleccionar Foto" style="height: 150px;" v-if="!view">
+                    <template v-slot:placeholder>
+                      <v-row
+                        class="fill-height ma-0"
+                        align="center"
+                        justify="center"
+                      >
+                    <!--     <v-progress-circular indeterminate color="grey lighten-5" v-show="!foto.new"></v-progress-circular> -->
+                      </v-row>
+                    </template>
+                </v-img>
+
               </v-flex>
             </v-layout>
 
@@ -233,6 +247,10 @@ export default {
         sortable: false
       }
     ],
+    foto: {
+      file: new Blob([0,1,0,1], {type: "application/zip"}),
+      new: false
+    },
     productos: [],
     suplidores: [],
     marcas: [],
@@ -388,14 +406,14 @@ export default {
 
       editItem(item) {
         this.view = false,
-          this.editedIndex = this.marcas.indexOf(item)
+          this.editedIndex = this.productos.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       viewItem(item) {
         this.view = true,
-          this.editedIndex = this.marcas.indexOf(item)
+          this.editedIndex = this.productos.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
 
@@ -518,6 +536,10 @@ export default {
   },
 
       close() {
+        this.foto= {
+          file: new Blob([0,1,0,1], {type: "application/zip"}),
+          new: false
+        }
         this.view = false,
           this.dialog = false,
           this.alert_dialog.model = false,
@@ -528,6 +550,10 @@ export default {
       },
 
       async save() {
+        this.foto= {
+          file: new Blob([0,1,0,1], {type: "application/zip"}),
+          new: false
+        }
         this.cardLoading = true
         if (this.editedIndex > -1) {
           // edita marca
@@ -630,8 +656,21 @@ export default {
         else return 'I'
       },
 
-      getImg(name){
-        return 'https://cdn.vuetifyjs.com/images/cards/'.concat(name);
+      getImg(name, _id){
+
+
+
+       if (this.editedIndex > -1 && !this.foto.new) {
+          return 'http://localhost:4000/images/'.concat(_id).concat('.').concat(name);
+        } else {
+          return window.URL.createObjectURL(this.foto.file);
+        }
+
+      },
+
+      to_upload({ target }){
+        this.foto.file = target.files[0];
+        this.foto.new = true
       },
     }
 }
@@ -640,4 +679,5 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
 </style>
