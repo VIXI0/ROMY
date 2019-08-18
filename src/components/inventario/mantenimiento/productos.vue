@@ -52,7 +52,7 @@
               <v-flex md6>
                 <v-text-field label="Nombre" v-model="editedItem.nombre" :filled="view" :readonly="view" autofocus></v-text-field>
 
-                <v-autocomplete  :filled="view" :readonly="view" :items="marcas"  item-text="nombre" label="marca" v-model="editedItem.marca"></v-autocomplete>
+                <v-autocomplete  :filled="view" :readonly="view" :items="marcas"  item-text="nombre" item-value="_id" label="marca" v-model="editedItem.marca"></v-autocomplete>
               </v-flex>
               <v-flex md6>
 <!--
@@ -86,11 +86,11 @@
                 <v-text-field v-mask="'A - A#- A#'" return-masked-value label="Ubicacion" v-model="editedItem.location" :filled="view" :readonly="view"></v-text-field>
               </v-flex>
               <v-flex>
-                <v-autocomplete label="Unidad" :filled="view" :readonly="view" v-model="editedItem.unidad" :items="unidades" item-text="nombre" ></v-autocomplete>
+                <v-autocomplete label="Unidad" :filled="view" :readonly="view" v-model="editedItem.unidad" :items="unidades" item-text="nombre" item-value="nombre"></v-autocomplete>
               </v-flex>
 
               <v-flex>
-                <v-autocomplete v-model="editedItem.Suplidor_primario" :filled="view" :readonly="view" :items="suplidores" item-text="nombre" label="Suplidor Primario"></v-autocomplete>
+                <v-autocomplete v-model="editedItem.Suplidor_primario" :filled="view" :readonly="view" :items="suplidores" item-text="nombre" item-value="_id" label="Suplidor Primario"></v-autocomplete>
               </v-flex>
 
             </v-layout>
@@ -214,17 +214,27 @@ export default {
     view: false,
     unidades: [
       {nombre: "C/U"},
-      {nombre: "GALON"}
+      {nombre: "Gramo"},
+      {nombre: "kilogramo"},
+      {nombre: "Miligramo"},
+      {nombre: "Libra"},
+      {nombre: "Metro"},
+      {nombre: "Metro cuadrado"},
+      {nombre: "Metro cúbico"},
+      {nombre: "Litro"},
+      {nombre: "Galon"},
     ],
     headers: [
       {
         text: 'Nombre',
         value: 'nombre'
       },
+      /*
       {
         text: 'Marca',
         value: 'marca'
       },
+      */
       {
         text: 'Ubicacion',
         value: 'location'
@@ -237,10 +247,12 @@ export default {
         text: 'Unidad',
         value: 'unidad'
       },
+      /*
       {
         text: 'Suplidor Primario',
         value: 'Suplidor_primario'
       },
+      */
       {
         text: 'Actions',
         value: 'action',
@@ -352,7 +364,7 @@ export default {
         } finally {
 
           if(this.$store.getters.currentA === true){
-            this.headers.splice(6, 0, {
+            this.headers.splice(4, 0, {
               text: 'Activo',
               value: 'active',
             });
@@ -536,11 +548,11 @@ export default {
   },
 
       close() {
+        this.dialog = false,
         this.foto.new = false;
         let list = new DataTransfer();
         this.$refs.imgInput.files = list.files;
         this.view = false,
-          this.dialog = false,
           this.alert_dialog.model = false,
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem);
@@ -680,6 +692,10 @@ export default {
       to_upload({ target }){
         this.foto.file = target.files[0];
         this.foto.new = true
+      },
+
+      log () {
+        console.log(this.editedItem.Suplidor_primario);
       },
     }
 }

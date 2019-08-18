@@ -20,12 +20,12 @@ Vue.config.productionTip = false;
 
 
 Vue.prototype.$http = axios;
-Vue.prototype.$http.defaults.baseURL = "http://localhost:4000/";
+Vue.prototype.$http.defaults.baseURL = "http://localhost:4000/gp";
 
 Vue.use(VueApollo);
 
 const apolloClient = new ApolloClient({
-  link: createUploadLink({ uri: 'http://localhost:4000/' }),
+  link: createUploadLink({ uri: 'http://localhost:4000/gp' }),
   cache: new InMemoryCache()
 })
 
