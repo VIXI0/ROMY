@@ -128,6 +128,9 @@ offset-y left
 
 <script>
 import axios from 'axios';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import { createUploadLink } from 'apollo-upload-client';
 
 export default {
   props: {
@@ -266,7 +269,15 @@ export default {
       this.baseURL = this.$http.defaults.baseURL
     },
     setBaseURL(){
-      this.$http.defaults.baseURL = this.baseURL
+
+      this.$http.defaults.baseURL = this.baseURL;
+
+      const apolloClient = new ApolloClient({
+        link: createUploadLink({ uri: this.$http.defaults.baseURL }),
+        cache: new InMemoryCache()
+      })
+
+      this.$apollo.provider.defaultClient = apolloClient;
       this.menu = false
       this.loading = false
     },

@@ -8,10 +8,10 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import '@mdi/font/css/materialdesignicons.css';
 import axios from 'axios';
 
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { ApolloClient } from 'apollo-client'
-import { createUploadLink } from 'apollo-upload-client'
-import VueApollo from 'vue-apollo'
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import { createUploadLink } from 'apollo-upload-client';
+import VueApollo from 'vue-apollo';
 //const VueTheMask = require('vue-the-mask');
 
 
@@ -25,7 +25,7 @@ Vue.prototype.$http.defaults.baseURL = "http://localhost:4000/";
 Vue.use(VueApollo);
 
 const apolloClient = new ApolloClient({
-  link: createUploadLink({ uri: 'http://localhost:4000' }),
+  link: createUploadLink({ uri: 'http://localhost:4000/' }),
   cache: new InMemoryCache()
 })
 
