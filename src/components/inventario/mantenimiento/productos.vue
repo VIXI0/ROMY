@@ -694,9 +694,6 @@ export default {
         this.foto.new = true
       },
 
-      log () {
-        console.log(this.editedItem.Suplidor_primario);
-      },
     }
 }
 
