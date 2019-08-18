@@ -61,14 +61,14 @@
 -->
                 <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" lazy-src="./../../../assets/loading.jpg"  aspect-ratio="1"  class="grey lighten-2">
 
-                    <input id="upload" type="file" accept="image/*" @change="to_upload" label="Seleccionar Foto" style="height: 150px;" v-if="!view">
+                    <input id="upload" type="file" accept="image/*" @change="to_upload" label="Seleccionar Foto" style="height: 150px;" v-show="!view" ref="imgInput">
                     <template v-slot:placeholder>
                       <v-row
                         class="fill-height ma-0"
                         align="center"
                         justify="center"
                       >
-                    <!--     <v-progress-circular indeterminate color="grey lighten-5" v-show="!foto.new"></v-progress-circular> -->
+                        <v-progress-circular indeterminate color="grey lighten-5" v-show="!foto.new"></v-progress-circular>
                       </v-row>
                     </template>
                 </v-img>
@@ -90,7 +90,7 @@
               </v-flex>
 
               <v-flex>
-                <v-autocomplete v-model="editedItem.Suplidor_primario" :box="view" :readonly="view" :items="suplidores" item-text="nombre" label="Suplidor Primario"></v-autocomplete>
+                <v-autocomplete v-model="editedItem.Suplidor_primario" :filled="view" :readonly="view" :items="suplidores" item-text="nombre" label="Suplidor Primario"></v-autocomplete>
               </v-flex>
 
             </v-layout>
@@ -248,7 +248,7 @@ export default {
       }
     ],
     foto: {
-      file: new Blob([0,1,0,1], {type: "application/zip"}),
+      file: new File(["./../../../assets/forest-art.jpg"], "forest-art.jpg"),
       new: false
     },
     productos: [],
@@ -536,10 +536,9 @@ export default {
   },
 
       close() {
-        this.foto= {
-          file: new Blob([0,1,0,1], {type: "application/zip"}),
-          new: false
-        }
+        this.foto.new = false;
+        let list = new DataTransfer();
+        this.$refs.imgInput.files = list.files;
         this.view = false,
           this.dialog = false,
           this.alert_dialog.model = false,
@@ -550,10 +549,9 @@ export default {
       },
 
       async save() {
-        this.foto= {
-          file: new Blob([0,1,0,1], {type: "application/zip"}),
-          new: false
-        }
+        this.foto.new = false;
+        let list = new DataTransfer();
+        this.$refs.imgInput.files = list.files;
         this.cardLoading = true
         if (this.editedIndex > -1) {
           // edita marca
@@ -660,10 +658,21 @@ export default {
 
 
 
-       if (this.editedIndex > -1 && !this.foto.new) {
-          return 'http://localhost:4000/images/'.concat(_id).concat('.').concat(name);
+       if (this.editedIndex > -1) {
+         if (this.foto.new) {
+           return window.URL.createObjectURL(this.foto.file);
+         } else {
+           return 'http://localhost:4000/images/'.concat(_id).concat('.').concat(name);
+         }
+
         } else {
-          return window.URL.createObjectURL(this.foto.file);
+          if (this.foto.new) {
+            return window.URL.createObjectURL(this.foto.file);
+          } else {
+
+            return 'http://localhost:4000/images/';
+          }
+
         }
 
       },
