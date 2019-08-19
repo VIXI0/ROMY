@@ -10,6 +10,15 @@
 
   <v-toolbar flat color="primary" dark max-height="70">
     <v-toolbar-title dark>Productos</v-toolbar-title>
+
+        <v-progress-linear
+      :active="!loading"
+      :indeterminate="!loading"
+      absolute
+      top
+      color="deep-purple accent-4"
+    ></v-progress-linear>
+
     <v-divider class="mx-2" inset vertical></v-divider>
 
 
@@ -69,6 +78,7 @@
                         justify="center"
                       >
                         <v-progress-circular indeterminate color="grey lighten-5" v-show="!foto.new"></v-progress-circular>
+                        <p>Loading</p>
                       </v-row>
                     </template>
                 </v-img>
@@ -207,6 +217,7 @@ export default {
       model: false,
       text: ""
     },
+    loading: true,
     tableLoading: false,
     cardLoading: false,
     search: '',
@@ -428,7 +439,7 @@ export default {
               noLink: true,
               cancelId: 0,
               title: 'Confirmacion',
-              message: 'Seguro que quieres inactivar marca',
+              message: 'Seguro que quieres inactivar producto',
               detail: 'Para activarlo nuevamente consulte a su administrador',
               //checkboxLabel: 'Remember my answer',
               //checkboxChecked: true,
@@ -447,17 +458,17 @@ export default {
                               data: {
                                 query: `
                                   mutation {
-                                    updateMarca(_id: "${item._id}", input: {
+                                    updateProducto(_id: "${item._id}", input: {
                                       active: false
                                     })
                                   }
                                   `
                               }
                             })
-                if ( result.data.data.updateMarca ) {
-                  const index = this.marcas.indexOf(item)
+                if ( result.data.data.updateProducto ) {
+                  const index = this.productos.indexOf(item)
                   item.active = false;
-                  Object.assign(this.marcas[index], item)
+                  Object.assign(this.productos[index], item)
                   this.tableLoading = false
                 }else {
                   this.tableLoading = false
@@ -486,7 +497,7 @@ export default {
               noLink: true,
               cancelId: 0,
               title: 'Confirmacion',
-              message: 'Seguro que quieres activar marca',
+              message: 'Seguro que quieres activar producto',
               detail: 'Para desactivarlo nuevamente consulte a su administrador',
               //checkboxLabel: 'Remember my answer',
               //checkboxChecked: true,
@@ -505,17 +516,17 @@ export default {
                               data: {
                                 query: `
                                   mutation {
-                                    updateMarca(_id: "${item._id}", input: {
+                                    updateProducto(_id: "${item._id}", input: {
                                       active: true
                                     })
                                   }
                                   `
                               }
                             })
-                if ( result.data.data.updateMarca ) {
-                  const index = this.marcas.indexOf(item)
+                if ( result.data.data.updateProducto ) {
+                  const index = this.productos.indexOf(item)
                   item.active = true;
-                  Object.assign(this.marcas[index], item)
+                  Object.assign(this.productos[index], item)
                   this.tableLoading = false
                 }else {
                   this.tableLoading = false
@@ -538,11 +549,12 @@ export default {
 
       close() {
         this.dialog = false,
+
         this.foto.new = false;
         let list = new DataTransfer();
         this.$refs.imgInput.files = list.files;
+        this.alert_dialog.model = false,
         this.view = false,
-          this.alert_dialog.model = false,
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem);
           this.editedIndex = -1;
@@ -608,6 +620,12 @@ export default {
 
             if ( result.data.data.updateProducto ) {
               Object.assign(this.productos[this.editedIndex], this.editedItem);
+
+              // uploadPhoto
+              if (this.foto.new) {
+                this.uploadPhoto(this.editedItem._id);
+              }
+
               this.cardLoading = false;
               this.close();
             }else {
@@ -631,22 +649,35 @@ export default {
               data: {
                 query: `
                   mutation {
-                          createMarca(input: {
+                          createProducto(input: {
                             nombre: "${this.editedItem.nombre}",
+                            marca: "${this.editedItem.marca}",
+                            image: "${this.editedItem.image}",
+                            descripcion: """${this.editedItem.descripcion}""",
+                            location: "${this.editedItem.location}",
+                            cantidad: ${this.editedItem.cantidad},
+                            unidad: "${this.editedItem.unidad}",
+                            Suplidor_primario: "${this.editedItem.Suplidor_primario}",
                             active: true
                           } )
                           }
                   `
               }
             })
-            if ( result.data.data.createMarca ) {
-              this.marcas.push(this.editedItem);
+            if ( result.data.data.createProducto ) {
+              this.productos.push(this.editedItem);
               this.cardLoading = false;
+
+              // uploadPhoto
+              if (this.foto.new) {
+              this.uploadPhoto(this.editedItem._id);
+              }
+
               this.close();
             }else {
               this.cardLoading = false;
               this.alert_dialog.type = "error";
-              this.alert_dialog.text = result.data.data.createMarca;
+              this.alert_dialog.text = result.data.data.createProducto;
               this.alert_dialog.model = true;
             }
           } catch (e) {
@@ -658,13 +689,6 @@ export default {
 
         }
 
-        if (this.foto.new) {
-        this.uploadPhoto(this.editedItem._id);
-        }
-
-        this.foto.new = false;
-        let list = new DataTransfer();
-        this.$refs.imgInput.files = list.files;
       },
 
       getColor (active) {
@@ -714,13 +738,14 @@ export default {
       },
 
       async uploadPhoto(id) {
-        
+        this.loading = false;
+
         Object.defineProperty(this.foto.file , 'name', {
           writable: true,
           value: id.concat('.').concat(this.getFileExtension(this.foto.file.name)),
         });
 
-        await this.$apollo.mutate({
+        const result = await this.$apollo.mutate({
           mutation: gql`mutation uploadImage($image: Upload!) {
                           uploadImage(image: $image)
                         }`,
@@ -728,7 +753,7 @@ export default {
             image: this.foto.file
           },
         });
-
+        this.loading = result.data.uploadImage;
       },
     }
 }
