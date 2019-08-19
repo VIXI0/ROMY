@@ -1,9 +1,14 @@
 {
   "name": "ROM",
-  "version": "2.5.7",
+  "version": "2.5.8",
   "description": "core_management",
   "author": "Miguel Rodriguez",
   "private": true,
+  "build": {
+      "win": {
+        "publish": ["github"]
+      }
+},
   "repository": "git@github.com:VIXI0/ROM_soft.git",
   "nsis": {
     "createStartMenuShortcut": true,
