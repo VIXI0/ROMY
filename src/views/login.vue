@@ -22,7 +22,7 @@ offset-y left
 <v-card color='primary lighten-4'>
 
  <v-card-text>
-   <v-text-field v-model="baseURL" label="GAS" outlined></v-text-field>
+   <v-text-field v-model="baseURL" label="GAS" outlined @keyup.enter="setBaseURL"></v-text-field>
      <v-divider></v-divider>
  </v-card-text>
 

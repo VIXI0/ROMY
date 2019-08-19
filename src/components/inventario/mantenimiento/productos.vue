@@ -10,6 +10,15 @@
 
   <v-toolbar flat color="primary" dark max-height="70">
     <v-toolbar-title dark>Productos</v-toolbar-title>
+
+        <v-progress-linear
+      :active="!loading"
+      :indeterminate="!loading"
+      absolute
+      top
+      color="deep-purple accent-4"
+    ></v-progress-linear>
+
     <v-divider class="mx-2" inset vertical></v-divider>
 
 
@@ -52,7 +61,7 @@
               <v-flex md6>
                 <v-text-field label="Nombre" v-model="editedItem.nombre" :filled="view" :readonly="view" autofocus></v-text-field>
 
-                <v-autocomplete  :filled="view" :readonly="view" :items="marcas"  item-text="nombre" label="marca" v-model="editedItem.marca"></v-autocomplete>
+                <v-autocomplete  :filled="view" :readonly="view" :items="marcas"  item-text="nombre" item-value="_id" label="marca" v-model="editedItem.marca"></v-autocomplete>
               </v-flex>
               <v-flex md6>
 <!--
@@ -61,14 +70,15 @@
 -->
                 <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" lazy-src="./../../../assets/loading.jpg"  aspect-ratio="1"  class="grey lighten-2">
 
-                    <input id="upload" type="file" accept="image/*" @change="to_upload" label="Seleccionar Foto" style="height: 150px;" v-if="!view">
+                    <input id="upload" type="file" accept="image/*" @change="to_upload" label="Seleccionar Foto" style="height: 150px;" v-show="!view" ref="imgInput">
                     <template v-slot:placeholder>
                       <v-row
                         class="fill-height ma-0"
                         align="center"
                         justify="center"
                       >
-                    <!--     <v-progress-circular indeterminate color="grey lighten-5" v-show="!foto.new"></v-progress-circular> -->
+                        <v-progress-circular indeterminate color="grey lighten-5" v-show="!foto.new"></v-progress-circular>
+                        <p>Loading</p>
                       </v-row>
                     </template>
                 </v-img>
@@ -86,11 +96,11 @@
                 <v-text-field v-mask="'A - A#- A#'" return-masked-value label="Ubicacion" v-model="editedItem.location" :filled="view" :readonly="view"></v-text-field>
               </v-flex>
               <v-flex>
-                <v-autocomplete label="Unidad" :filled="view" :readonly="view" v-model="editedItem.unidad" :items="unidades" item-text="nombre" ></v-autocomplete>
+                <v-autocomplete label="Unidad" :filled="view" :readonly="view" v-model="editedItem.unidad" :items="unidades" item-text="nombre" item-value="nombre"></v-autocomplete>
               </v-flex>
 
               <v-flex>
-                <v-autocomplete v-model="editedItem.Suplidor_primario" :box="view" :readonly="view" :items="suplidores" item-text="nombre" label="Suplidor Primario"></v-autocomplete>
+                <v-autocomplete v-model="editedItem.Suplidor_primario" :filled="view" :readonly="view" :items="suplidores" item-text="nombre" item-value="_id" label="Suplidor Primario"></v-autocomplete>
               </v-flex>
 
             </v-layout>
@@ -207,6 +217,7 @@ export default {
       model: false,
       text: ""
     },
+    loading: true,
     tableLoading: false,
     cardLoading: false,
     search: '',
@@ -214,17 +225,27 @@ export default {
     view: false,
     unidades: [
       {nombre: "C/U"},
-      {nombre: "GALON"}
+      {nombre: "Gramo"},
+      {nombre: "kilogramo"},
+      {nombre: "Miligramo"},
+      {nombre: "Libra"},
+      {nombre: "Metro"},
+      {nombre: "Metro cuadrado"},
+      {nombre: "Metro cúbico"},
+      {nombre: "Litro"},
+      {nombre: "Galon"},
     ],
     headers: [
       {
         text: 'Nombre',
         value: 'nombre'
       },
+      /*
       {
         text: 'Marca',
         value: 'marca'
       },
+      */
       {
         text: 'Ubicacion',
         value: 'location'
@@ -237,10 +258,12 @@ export default {
         text: 'Unidad',
         value: 'unidad'
       },
+      /*
       {
         text: 'Suplidor Primario',
         value: 'Suplidor_primario'
       },
+      */
       {
         text: 'Actions',
         value: 'action',
@@ -248,7 +271,7 @@ export default {
       }
     ],
     foto: {
-      file: new Blob([0,1,0,1], {type: "application/zip"}),
+      file: new File(["./../../../assets/forest-art.jpg"], "forest-art.jpg"),
       new: false
     },
     productos: [],
@@ -309,17 +332,6 @@ export default {
 
     methods: {
 
-      async uploadPhoto( { target } ) {
-        await this.$apollo.mutate({
-          mutation: gql`mutation uploadImage($image: Upload!) {
-                          uploadImage(image: $image)
-                        }`,
-          variables: {
-            image: target.files[0]
-          },
-        });
-
-      },
 
       async initialize() {
         this.tableLoading = true
@@ -352,7 +364,7 @@ export default {
         } finally {
 
           if(this.$store.getters.currentA === true){
-            this.headers.splice(6, 0, {
+            this.headers.splice(4, 0, {
               text: 'Activo',
               value: 'active',
             });
@@ -427,7 +439,7 @@ export default {
               noLink: true,
               cancelId: 0,
               title: 'Confirmacion',
-              message: 'Seguro que quieres inactivar marca',
+              message: 'Seguro que quieres inactivar producto',
               detail: 'Para activarlo nuevamente consulte a su administrador',
               //checkboxLabel: 'Remember my answer',
               //checkboxChecked: true,
@@ -446,17 +458,17 @@ export default {
                               data: {
                                 query: `
                                   mutation {
-                                    updateMarca(_id: "${item._id}", input: {
+                                    updateProducto(_id: "${item._id}", input: {
                                       active: false
                                     })
                                   }
                                   `
                               }
                             })
-                if ( result.data.data.updateMarca ) {
-                  const index = this.marcas.indexOf(item)
+                if ( result.data.data.updateProducto ) {
+                  const index = this.productos.indexOf(item)
                   item.active = false;
-                  Object.assign(this.marcas[index], item)
+                  Object.assign(this.productos[index], item)
                   this.tableLoading = false
                 }else {
                   this.tableLoading = false
@@ -485,7 +497,7 @@ export default {
               noLink: true,
               cancelId: 0,
               title: 'Confirmacion',
-              message: 'Seguro que quieres activar marca',
+              message: 'Seguro que quieres activar producto',
               detail: 'Para desactivarlo nuevamente consulte a su administrador',
               //checkboxLabel: 'Remember my answer',
               //checkboxChecked: true,
@@ -504,17 +516,17 @@ export default {
                               data: {
                                 query: `
                                   mutation {
-                                    updateMarca(_id: "${item._id}", input: {
+                                    updateProducto(_id: "${item._id}", input: {
                                       active: true
                                     })
                                   }
                                   `
                               }
                             })
-                if ( result.data.data.updateMarca ) {
-                  const index = this.marcas.indexOf(item)
+                if ( result.data.data.updateProducto ) {
+                  const index = this.productos.indexOf(item)
                   item.active = true;
-                  Object.assign(this.marcas[index], item)
+                  Object.assign(this.productos[index], item)
                   this.tableLoading = false
                 }else {
                   this.tableLoading = false
@@ -536,13 +548,13 @@ export default {
   },
 
       close() {
-        this.foto= {
-          file: new Blob([0,1,0,1], {type: "application/zip"}),
-          new: false
-        }
+        this.dialog = false,
+
+        this.foto.new = false;
+        let list = new DataTransfer();
+        this.$refs.imgInput.files = list.files;
+        this.alert_dialog.model = false,
         this.view = false,
-          this.dialog = false,
-          this.alert_dialog.model = false,
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem);
           this.editedIndex = -1;
@@ -550,13 +562,14 @@ export default {
       },
 
       async save() {
-        this.foto= {
-          file: new Blob([0,1,0,1], {type: "application/zip"}),
-          new: false
+
+        if (this.foto.new) {
+          this.editedItem.image = this.getFileExtension(this.foto.file.name);
         }
+
         this.cardLoading = true
         if (this.editedIndex > -1) {
-          // edita marca
+          // edita producto
 
           try {
             var result;
@@ -567,8 +580,15 @@ export default {
                             data: {
                               query: `
                                 mutation {
-                                  updateMarca(_id: "${this.editedItem._id}", input: {
+                                  updateProducto(_id: "${this.editedItem._id}", input: {
                                     nombre: "${this.editedItem.nombre}",
+                                    marca: "${this.editedItem.marca}",
+                                    image: "${this.editedItem.image}",
+                                    descripcion: """${this.editedItem.descripcion}""",
+                                    location: "${this.editedItem.location}",
+                                    cantidad: ${this.editedItem.cantidad},
+                                    unidad: "${this.editedItem.unidad}",
+                                    Suplidor_primario: "${this.editedItem.Suplidor_primario}",
                                     active: false
                                   })
                                 }
@@ -581,8 +601,15 @@ export default {
                             data: {
                               query: `
                                 mutation {
-                                  updateMarca(_id: "${this.editedItem._id}", input: {
+                                  updateProducto(_id: "${this.editedItem._id}", input: {
                                     nombre: "${this.editedItem.nombre}",
+                                    marca: "${this.editedItem.marca}",
+                                    image: "${this.editedItem.image}",
+                                    descripcion: """${this.editedItem.descripcion}""",
+                                    location: "${this.editedItem.location}",
+                                    cantidad: ${this.editedItem.cantidad},
+                                    unidad: "${this.editedItem.unidad}",
+                                    Suplidor_primario: "${this.editedItem.Suplidor_primario}",
                                     active: true
                                   })
                                 }
@@ -591,8 +618,14 @@ export default {
                           })
             }
 
-            if ( result.data.data.updateMarca ) {
-              Object.assign(this.marcas[this.editedIndex], this.editedItem);
+            if ( result.data.data.updateProducto ) {
+              Object.assign(this.productos[this.editedIndex], this.editedItem);
+
+              // uploadPhoto
+              if (this.foto.new) {
+                this.uploadPhoto(this.editedItem._id);
+              }
+
               this.cardLoading = false;
               this.close();
             }else {
@@ -616,22 +649,35 @@ export default {
               data: {
                 query: `
                   mutation {
-                          createMarca(input: {
+                          createProducto(input: {
                             nombre: "${this.editedItem.nombre}",
+                            marca: "${this.editedItem.marca}",
+                            image: "${this.editedItem.image}",
+                            descripcion: """${this.editedItem.descripcion}""",
+                            location: "${this.editedItem.location}",
+                            cantidad: ${this.editedItem.cantidad},
+                            unidad: "${this.editedItem.unidad}",
+                            Suplidor_primario: "${this.editedItem.Suplidor_primario}",
                             active: true
                           } )
                           }
                   `
               }
             })
-            if ( result.data.data.createMarca ) {
-              this.marcas.push(this.editedItem);
+            if ( result.data.data.createProducto ) {
+              this.productos.push(this.editedItem);
               this.cardLoading = false;
+
+              // uploadPhoto
+              if (this.foto.new) {
+              this.uploadPhoto(this.editedItem._id);
+              }
+
               this.close();
             }else {
               this.cardLoading = false;
               this.alert_dialog.type = "error";
-              this.alert_dialog.text = result.data.data.createMarca;
+              this.alert_dialog.text = result.data.data.createProducto;
               this.alert_dialog.model = true;
             }
           } catch (e) {
@@ -642,7 +688,6 @@ export default {
           }
 
         }
-
 
       },
 
@@ -660,10 +705,22 @@ export default {
 
 
 
-       if (this.editedIndex > -1 && !this.foto.new) {
-          return 'http://localhost:4000/images/'.concat(_id).concat('.').concat(name);
+       if (this.editedIndex > -1) {
+         if (this.foto.new) {
+           return window.URL.createObjectURL(this.foto.file);
+         } else {
+           let url = this.$http.defaults.baseURL;
+           return url.concat('images/').concat(_id).concat('.').concat(name);
+         }
+
         } else {
-          return window.URL.createObjectURL(this.foto.file);
+          if (this.foto.new) {
+            return window.URL.createObjectURL(this.foto.file);
+          } else {
+            let url = this.$http.defaults.baseURL;
+            return url.concat('images/');
+          }
+
         }
 
       },
@@ -671,6 +728,32 @@ export default {
       to_upload({ target }){
         this.foto.file = target.files[0];
         this.foto.new = true
+      },
+
+     getFileExtension(filename){
+
+        var ext = /^.+\.([^.]+)$/.exec(filename);
+        return ext == null ? "" : ext[1];
+
+      },
+
+      async uploadPhoto(id) {
+        this.loading = false;
+
+        Object.defineProperty(this.foto.file , 'name', {
+          writable: true,
+          value: id.concat('.').concat(this.getFileExtension(this.foto.file.name)),
+        });
+
+        const result = await this.$apollo.mutate({
+          mutation: gql`mutation uploadImage($image: Upload!) {
+                          uploadImage(image: $image)
+                        }`,
+          variables: {
+            image: this.foto.file
+          },
+        });
+        this.loading = result.data.uploadImage;
       },
     }
 }

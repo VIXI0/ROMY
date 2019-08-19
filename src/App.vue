@@ -22,9 +22,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-const { remote } = require('electron');
-
-var win = remote.getCurrentWindow();
+import { remote } from 'electron';
+const win = remote.getCurrentWindow();
 
 export default Vue.extend({
   name: 'App',
@@ -34,28 +33,28 @@ export default Vue.extend({
 
   methods: {
 
-    quit(){
+    quit() {
       win.close();
     },
 
-    minimize(){
+    minimize() {
       win.minimize();
     },
 
-    maximize(){
-      if(!win.isMaximized()){
+    maximize() {
+      if (!win.isMaximized()) {
         win.maximize();
         this.maxicon = 'mdi-window-restore';
-      }else{
+      } else {
         win.unmaximize();
         this.maxicon = 'mdi-window-maximize';
       }
-    }
-  }
+    },
+  },
 });
 
 
-//gradient="to top right,rgba(0, 0, 0, 0.5), rgba(25,32,72,.7)"
+// gradient="to top right,rgba(0, 0, 0, 0.5), rgba(25,32,72,.7)"
 </script>
 
 <style media="screen">
