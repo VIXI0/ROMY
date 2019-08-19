@@ -693,7 +693,8 @@ export default {
                   `
               }
             })
-            if ( result.data.data.createProducto ) {
+            if ( result.data.data.createProducto.done ) {
+              this.editedItem._id = result.data.data.createProducto._id;
               this.productos.push(this.editedItem);
               this.cardLoading = false;
 

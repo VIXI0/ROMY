@@ -599,7 +599,8 @@ export default {
                   `
               }
             })
-            if ( result.data.data.createSuplidor ) {
+            if ( result.data.data.createSuplidor.done ) {
+              this.editedItem._id = result.data.data.createSuplidor._id;
               this.Suplidores.push(this.editedItem);
               this.cardLoading = false;
               this.close();

@@ -486,7 +486,8 @@ export default {
                   `
               }
             })
-            if ( result.data.data.createMarca ) {
+            if ( result.data.data.createMarca.done ) {
+              this.editedItem._id = result.data.data.createMarca._id;
               this.marcas.push(this.editedItem);
               this.cardLoading = false;
               this.close();
