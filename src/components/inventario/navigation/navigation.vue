@@ -225,15 +225,20 @@ export default {
 
   methods: {
     loadCRUDA(sub){
-      const CRUDA = {
+  /*    const CRUDA = {
         c: sub.c,
         r: sub.r,
         u: sub.u,
         d: sub.d,
         a: sub.a
       }
-
-      this.$store.commit('setCRUDA', CRUDA);
+*/
+      this.$store.commit('setCRUDA', {
+              c: sub.c,
+              r: sub.r,
+              u: sub.u,
+              d: sub.d,
+              a: sub.a });
       //console.log(CRUDA);
     },
     async initialize() {

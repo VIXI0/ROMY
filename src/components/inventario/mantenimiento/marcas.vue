@@ -218,20 +218,38 @@ export default {
       async initialize() {
         this.tableLoading = true
         try {
-          var result = await axios({
-            method: "POST",
-            data: {
-              query: `
-                        {
-                          marcas{
-                            _id,
-                            nombre,
-                            active
+          var result;
+          if (this.$store.getters.currentA) {
+            result = await axios({
+              method: "POST",
+              data: {
+                query: `
+                          {
+                            marcasAll{
+                              _id,
+                              nombre,
+                              active
+                            }
                           }
-                        }
-                  `
-            }
-          })
+                    `
+              }
+            })
+          } else {
+            result = await axios({
+              method: "POST",
+              data: {
+                query: `
+                          {
+                            marcas{
+                              _id,
+                              nombre
+                            }
+                          }
+                    `
+              }
+            })
+          }
+
         } catch (e) {
           this.alert.type = "error"
           this.alert.text = e
@@ -245,7 +263,12 @@ export default {
             });
           }
 
-          this.marcas = result.data.data.marcas
+          if (this.$store.getters.currentA) {
+            this.marcas = result.data.data.marcasAll
+          } else {
+            this.marcas = result.data.data.marcas
+          }
+
           this.tableLoading = false
         }
 

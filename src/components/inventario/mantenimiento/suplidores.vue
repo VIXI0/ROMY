@@ -294,33 +294,60 @@ export default {
       async initialize() {
         this.tableLoading = true
         try {
-          var result = await axios({
-            method: "POST",
-            data: {
-              query: `
-                        {
-                          Suplidores{
-                            _id,
-                            nombre,
-                            direccion,
-                            telefono,
-                            rnc,
-                            ncf,
-                            Representante,
-                            telefonor,
-                            anotaciones,
-                            active
+          var result;
+          if (this.$store.getters.currentA) {
+             result = await axios({
+              method: "POST",
+              data: {
+                query: `
+                          {
+                            SuplidoresAll{
+                              _id,
+                              nombre,
+                              direccion,
+                              telefono,
+                              rnc,
+                              ncf,
+                              Representante,
+                              telefonor,
+                              anotaciones,
+                              active
+                            }
                           }
-                        }
-                  `
-            }
-          })
+                    `
+              }
+            })
+          } else {
+             result = await axios({
+              method: "POST",
+              data: {
+                query: `
+                          {
+                            Suplidores{
+                              _id,
+                              nombre,
+                              direccion,
+                              telefono,
+                              rnc,
+                              ncf,
+                              Representante,
+                              telefonor,
+                              anotaciones
+                            }
+                          }
+                    `
+              }
+            })
+          }
+
+
+
         } catch (e) {
           this.alert.type = "error"
           this.alert.text = e
           this.alert.model = true
         } finally {
-          
+
           if(this.$store.getters.currentA === true){
             this.headers.splice(4, 0, {
               text: 'Activo',
@@ -328,7 +355,12 @@ export default {
             });
           }
 
-          this.Suplidores = result.data.data.Suplidores
+          if (this.$store.getters.currentA) {
+            this.Suplidores = result.data.data.SuplidoresAll
+          } else {
+            this.Suplidores = result.data.data.Suplidores
+          }
+
           this.tableLoading = false
         }
 

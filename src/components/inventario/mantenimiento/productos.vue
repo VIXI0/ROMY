@@ -336,27 +336,52 @@ export default {
       async initialize() {
         this.tableLoading = true
         try {
-          var result = await axios({
-            method: "POST",
-            data: {
-              query: `
-                        {
-                          Productos{
-                            _id,
-                            marca,
-                            nombre,
-                            image,
-                            descripcion,
-                            location,
-                            cantidad,
-                            unidad,
-                            Suplidor_primario,
-                            active
+          var result;
+          if (this.$store.getters.currentA) {
+            result = await axios({
+              method: "POST",
+              data: {
+                query: `
+                          {
+                            ProductosAll{
+                              _id,
+                              marca,
+                              nombre,
+                              image,
+                              descripcion,
+                              location,
+                              cantidad,
+                              unidad,
+                              Suplidor_primario,
+                              active
+                            }
                           }
-                        }
-                  `
-            }
-          })
+                    `
+              }
+            })
+          } else {
+            result = await axios({
+              method: "POST",
+              data: {
+                query: `
+                          {
+                            Productos{
+                              _id,
+                              marca,
+                              nombre,
+                              image,
+                              descripcion,
+                              location,
+                              cantidad,
+                              unidad,
+                              Suplidor_primario
+                            }
+                          }
+                    `
+              }
+            })
+          }
+
         } catch (e) {
           this.alert.type = "error"
           this.alert.text = e
@@ -370,7 +395,11 @@ export default {
             });
           }
 
+          if (this.$store.getters.currentA) {
+          this.productos = result.data.data.ProductosAll;
+        } else {
           this.productos = result.data.data.Productos;
+        }
           this.tableLoading = false;
           this.Load();
         }
