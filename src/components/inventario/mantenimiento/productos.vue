@@ -388,18 +388,19 @@ export default {
           this.alert.model = true
         } finally {
 
-          if(this.$store.getters.currentA === true){
+          if(this.$store.getters.currentA){
             this.headers.splice(4, 0, {
               text: 'Activo',
               value: 'active',
             });
+
+            this.productos = result.data.data.ProductosAll;
+
+          } else {
+            this.productos = result.data.data.Productos;
           }
 
-          if (this.$store.getters.currentA) {
-          this.productos = result.data.data.ProductosAll;
-        } else {
-          this.productos = result.data.data.Productos;
-        }
+
           this.tableLoading = false;
           this.Load();
         }

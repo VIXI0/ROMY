@@ -256,18 +256,16 @@ export default {
           this.alert.model = true
         } finally {
 
-          if(this.$store.getters.currentA === true){
+          if(this.$store.getters.currentA){
             this.headers.splice(1, 0, {
               text: 'Activo',
               value: 'active',
             });
-          }
-
-          if (this.$store.getters.currentA) {
-            this.marcas = result.data.data.marcasAll
-          } else {
+            this.marcas = result.data.data.marcasAll;
+          }else {
             this.marcas = result.data.data.marcas
           }
+
 
           this.tableLoading = false
         }

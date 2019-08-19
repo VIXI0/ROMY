@@ -348,16 +348,13 @@ export default {
           this.alert.model = true
         } finally {
 
-          if(this.$store.getters.currentA === true){
+          if(this.$store.getters.currentA){
             this.headers.splice(4, 0, {
               text: 'Activo',
               value: 'active',
             });
-          }
-
-          if (this.$store.getters.currentA) {
-            this.Suplidores = result.data.data.SuplidoresAll
-          } else {
+            this.Suplidores = result.data.data.SuplidoresAll;
+          }else {
             this.Suplidores = result.data.data.Suplidores
           }
 
