@@ -321,17 +321,6 @@ export default {
 
     methods: {
 
-      async uploadPhoto( { target } ) {
-        await this.$apollo.mutate({
-          mutation: gql`mutation uploadImage($image: Upload!) {
-                          uploadImage(image: $image)
-                        }`,
-          variables: {
-            image: target.files[0]
-          },
-        });
-
-      },
 
       async initialize() {
         this.tableLoading = true
@@ -561,12 +550,14 @@ export default {
       },
 
       async save() {
-        this.foto.new = false;
-        let list = new DataTransfer();
-        this.$refs.imgInput.files = list.files;
+
+        if (this.foto.new) {
+          this.editedItem.image = this.getFileExtension(this.foto.file.name);
+        }
+
         this.cardLoading = true
         if (this.editedIndex > -1) {
-          // edita marca
+          // edita producto
 
           try {
             var result;
@@ -577,8 +568,15 @@ export default {
                             data: {
                               query: `
                                 mutation {
-                                  updateMarca(_id: "${this.editedItem._id}", input: {
+                                  updateProducto(_id: "${this.editedItem._id}", input: {
                                     nombre: "${this.editedItem.nombre}",
+                                    marca: "${this.editedItem.marca}",
+                                    image: "${this.editedItem.image}",
+                                    descripcion: """${this.editedItem.descripcion}""",
+                                    location: "${this.editedItem.location}",
+                                    cantidad: ${this.editedItem.cantidad},
+                                    unidad: "${this.editedItem.unidad}",
+                                    Suplidor_primario: "${this.editedItem.Suplidor_primario}",
                                     active: false
                                   })
                                 }
@@ -591,8 +589,15 @@ export default {
                             data: {
                               query: `
                                 mutation {
-                                  updateMarca(_id: "${this.editedItem._id}", input: {
+                                  updateProducto(_id: "${this.editedItem._id}", input: {
                                     nombre: "${this.editedItem.nombre}",
+                                    marca: "${this.editedItem.marca}",
+                                    image: "${this.editedItem.image}",
+                                    descripcion: """${this.editedItem.descripcion}""",
+                                    location: "${this.editedItem.location}",
+                                    cantidad: ${this.editedItem.cantidad},
+                                    unidad: "${this.editedItem.unidad}",
+                                    Suplidor_primario: "${this.editedItem.Suplidor_primario}",
                                     active: true
                                   })
                                 }
@@ -601,8 +606,8 @@ export default {
                           })
             }
 
-            if ( result.data.data.updateMarca ) {
-              Object.assign(this.marcas[this.editedIndex], this.editedItem);
+            if ( result.data.data.updateProducto ) {
+              Object.assign(this.productos[this.editedIndex], this.editedItem);
               this.cardLoading = false;
               this.close();
             }else {
@@ -653,7 +658,13 @@ export default {
 
         }
 
+        if (this.foto.new) {
+        this.uploadPhoto(this.editedItem._id);
+        }
 
+        this.foto.new = false;
+        let list = new DataTransfer();
+        this.$refs.imgInput.files = list.files;
       },
 
       getColor (active) {
@@ -674,15 +685,16 @@ export default {
          if (this.foto.new) {
            return window.URL.createObjectURL(this.foto.file);
          } else {
-           return 'http://localhost:4000/images/'.concat(_id).concat('.').concat(name);
+           let url = this.$http.defaults.baseURL;
+           return url.concat('images/').concat(_id).concat('.').concat(name);
          }
 
         } else {
           if (this.foto.new) {
             return window.URL.createObjectURL(this.foto.file);
           } else {
-
-            return 'http://localhost:4000/images/';
+            let url = this.$http.defaults.baseURL;
+            return url.concat('images/');
           }
 
         }
@@ -694,6 +706,30 @@ export default {
         this.foto.new = true
       },
 
+     getFileExtension(filename){
+
+        var ext = /^.+\.([^.]+)$/.exec(filename);
+        return ext == null ? "" : ext[1];
+
+      },
+
+      async uploadPhoto(id) {
+        
+        Object.defineProperty(this.foto.file , 'name', {
+          writable: true,
+          value: id.concat('.').concat(this.getFileExtension(this.foto.file.name)),
+        });
+
+        await this.$apollo.mutate({
+          mutation: gql`mutation uploadImage($image: Upload!) {
+                          uploadImage(image: $image)
+                        }`,
+          variables: {
+            image: this.foto.file
+          },
+        });
+
+      },
     }
 }
 
