@@ -591,7 +591,10 @@ export default {
                             telefonor: ["${this.editedItem.telefonor}"],
                             anotaciones: """${this.editedItem.anotaciones}""",
                             active: true
-                          } )
+                          } ){
+                            _id,
+                            done
+                          }
                           }
                   `
               }

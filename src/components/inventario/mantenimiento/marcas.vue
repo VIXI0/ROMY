@@ -479,7 +479,10 @@ export default {
                           createMarca(input: {
                             nombre: "${this.editedItem.nombre}",
                             active: true
-                          } )
+                          } ){
+                            _id,
+                            done
+                          }
                           }
                   `
               }

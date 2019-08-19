@@ -689,7 +689,10 @@ export default {
                             unidad: "${this.editedItem.unidad}",
                             Suplidor_primario: "${this.editedItem.Suplidor_primario}",
                             active: true
-                          } )
+                          } ){
+                            _id,
+                            done
+                          }
                           }
                   `
               }
