@@ -4,9 +4,18 @@ import login from './views/login.vue';
 
 import inv_main from './components/inventario/navigation/navigation.vue';
 import inv_welcome from './components/inventario/welcome/welcome.vue';
+
+// mantenimiento
 import inv_suplidores from './components/inventario/mantenimiento/suplidores.vue';
 import inv_marcas from './components/inventario/mantenimiento/marcas.vue';
 import inv_productos from './components/inventario/mantenimiento/productos.vue';
+
+
+//Proceso
+import inv_compra from './components/inventario/proceso/compra.vue';
+import inv_orden_compra from './components/inventario/proceso/orden_compra.vue';
+import inv_recepcion_orden_compra from './components/inventario/proceso/recepcion_orden_compra.vue';
+import inv_transferencia from './components/inventario/proceso/transferencia.vue';
 
 Vue.use(Router);
 
@@ -58,6 +67,30 @@ export default new Router({
             path: '/inv_productos',
             name: 'inv_productos',
             component: inv_productos
+          },
+
+          {
+            path: '/inv_compra',
+            name: 'inv_compra',
+            component: inv_compra
+          },
+
+          {
+            path: '/inv_orden_compra',
+            name: 'inv_orden_compra',
+            component: inv_orden_compra
+          },
+
+          {
+            path: '/inv_recepcion_orden_compra',
+            name: 'inv_recepcion_orden_compra',
+            component: inv_recepcion_orden_compra
+          },
+
+          {
+            path: '/inv_transferencia',
+            name: 'inv_transferencia',
+            component: inv_transferencia
           },
 
       ]
