@@ -68,7 +68,7 @@
                 <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" >
                 </v-img>
 -->
-                <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" lazy-src="./../../../assets/loading.jpg"  aspect-ratio="1"  class="grey lighten-2">
+                <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" lazy-src="./../../../assets/loading.jpg"  aspect-ratio="1.7" contain  class="grey lighten-2">
 
                     <input id="upload" type="file" accept="image/*" @change="to_upload" label="Seleccionar Foto" style="height: 150px;" v-show="!view" ref="imgInput">
                     <template v-slot:placeholder>

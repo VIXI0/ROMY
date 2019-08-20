@@ -1,6 +1,6 @@
 {
   "name": "ROM",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "core_management",
   "author": "Miguel Rodriguez",
   "private": true,
@@ -21,7 +21,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit",
     "publish": " vue-cli-service electron:build -p always",
-    "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=build --flatten"
+    "electron:generate-icons": "electron-icon-builder --input=./public/ron.png --output=build --flatten"
   },
   "main": "background.js",
   "dependencies": {
