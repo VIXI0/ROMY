@@ -223,13 +223,13 @@ export default {
         return true;
 
       } catch (e) {
-        return e
+        return e;
       }
     },
     async login() {
       try {
-        this.alert.model = false
-        this.loading = true
+        this.alert.model = false;
+        this.loading = true;
         var token = await axios({
           method: "POST",
           data: {
@@ -241,32 +241,32 @@ export default {
           }
         })
       } catch (e) {
-        this.loading = false
-        this.alert.type = "error"
-        this.alert.text = e
-        this.alert.model = true
+        this.loading = false;
+        this.alert.type = "error";
+        this.alert.text = e;
+        this.alert.model = true;
       } finally {
-        this.loading = false
+        this.loading = false;
         if(token.data.data.login === "Contraseña incorrecta" || token.data.data.login ===  "Usuario no existente" || token.data.data.login === "Usuario inactivo"){
-          this.alert.type = "error"
-          this.alert.text = token.data.data.login
-          this.alert.model = true
+          this.alert.type = "error";
+          this.alert.text = token.data.data.login;
+          this.alert.model = true;
         }else {
-          this.$http.defaults.headers.common['Authorization'] = 'Bearer '+ token.data.data.login
+          this.$http.defaults.headers.common['Authorization'] = 'Bearer '+ token.data.data.login;
           const setR = await this.setRole();
           if(setR === true ){
-            this.$router.push('/menu_sys')
+            this.$router.push('/menu_sys');
           }else {
-            this.alert.type = "error"
-            this.alert.text = setR
-            this.alert.model = true
+            this.alert.type = "error";
+            this.alert.text = setR;
+            this.alert.model = true;
           }
 
         }
       }
     },
     viewBaseURL(){
-      this.baseURL = this.$http.defaults.baseURL
+      this.baseURL = this.$http.defaults.baseURL;
     },
     setBaseURL(){
 
@@ -278,12 +278,12 @@ export default {
       })
 
       this.$apollo.provider.defaultClient = apolloClient;
-      this.menu = false
-      this.loading = false
+      this.menu = false;
+      this.loading = false;
     },
     cancelBaseURL(){
-      this.baseURL =  ''
-      this.menu = false
+      this.baseURL =  '';
+      this.menu = false;
     }
   },
 }
