@@ -172,7 +172,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   data: () => ({
@@ -219,7 +219,7 @@ export default {
 
   watch: {
     tableDense(tableDense) {
-      this.$store.commit('changeDense', tableDense)
+      this.$store.commit('changeDense', tableDense);
     }
   },
 
@@ -255,11 +255,11 @@ export default {
           }
         })
       } catch (e) {
-        this.alert.type = "error"
-        this.alert.text = e
-        this.alert.model = true
+        this.alert.type = "error";
+        this.alert.text = e;
+        this.alert.model = true;
       } finally {
-        this.user = result.data.data.currentU
+        this.user = result.data.data.currentU;
       }
 
     },
@@ -277,12 +277,12 @@ export default {
           },
         });
       } catch (e) {
-        this.alert.type = 'error',
-        this.alert.text = e,
-        this.alert.model = true
+        this.alert.type = 'error';
+        this.alert.text = e;
+        this.alert.model = true;
       } finally {
         this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token.data.data.logout;
-        this.$router.push('/')
+        this.$router.push('/');
 
       }
     },

@@ -266,9 +266,9 @@ export default {
     computed: {
       formTitle() {
         if (this.editedIndex === -1) {
-          return 'Nuevo Suplidor'
+          return 'Nuevo Suplidor';
         } else {
-          return this.view === true ? 'Mostrar Suplidor' : 'Editar Suplidor'
+          return this.view === true ? 'Mostrar Suplidor' : 'Editar Suplidor';
         }
 
       }
@@ -276,7 +276,7 @@ export default {
 
     watch: {
       dialog(val) {
-        val || this.close()
+        val || this.close();
       }
     },
 
@@ -292,7 +292,7 @@ export default {
     methods: {
 
       async initialize() {
-        this.tableLoading = true
+        this.tableLoading = true;
         try {
           var result;
           if (this.$store.getters.currentA) {
@@ -343,9 +343,9 @@ export default {
 
 
         } catch (e) {
-          this.alert.type = "error"
-          this.alert.text = e
-          this.alert.model = true
+          this.alert.type = "error";
+          this.alert.text = e;
+          this.alert.model = true;
         } finally {
 
           if(this.$store.getters.currentA){
@@ -355,26 +355,26 @@ export default {
             });
             this.Suplidores = result.data.data.SuplidoresAll;
           }else {
-            this.Suplidores = result.data.data.Suplidores
+            this.Suplidores = result.data.data.Suplidores;
           }
 
-          this.tableLoading = false
+          this.tableLoading = false;
         }
 
       },
 
       editItem(item) {
-        this.view = false,
-          this.editedIndex = this.Suplidores.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.view = false;
+          this.editedIndex = this.Suplidores.indexOf(item);
+        this.editedItem = Object.assign({}, item);
+        this.dialog = true;
       },
 
       viewItem(item) {
-        this.view = true,
-          this.editedIndex = this.Suplidores.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.view = true;
+          this.editedIndex = this.Suplidores.indexOf(item);
+        this.editedItem = Object.assign({}, item);
+        this.dialog = true;
 
       },
 
@@ -413,21 +413,21 @@ export default {
                               }
                             })
                 if ( result.data.data.updateSuplidor ) {
-                  const index = this.Suplidores.indexOf(item)
+                  const index = this.Suplidores.indexOf(item);
                   item.active = false;
-                  Object.assign(this.Suplidores[index], item)
-                  this.tableLoading = false
+                  Object.assign(this.Suplidores[index], item);
+                  this.tableLoading = false;
                 }else {
-                  this.tableLoading = false
-                  this.alert.type = "error"
-                  this.alert.text = result.data.error.errors.message
-                  this.alert.model = true
+                  this.tableLoading = false;
+                  this.alert.type = "error";
+                  this.alert.text = result.data.error.errors.message;
+                  this.alert.model = true;
                 }
               } catch (e) {
-                this.tableLoading = false
-                this.alert.type = "error"
-                this.alert.text = e
-                this.alert.model = true
+                this.tableLoading = false;
+                this.alert.type = "error";
+                this.alert.text = e;
+                this.alert.model = true;
               }
 
 
@@ -471,21 +471,21 @@ export default {
                               }
                             })
                 if ( result.data.data.updateSuplidor ) {
-                  const index = this.Suplidores.indexOf(item)
+                  const index = this.Suplidores.indexOf(item);
                   item.active = true;
-                  Object.assign(this.Suplidores[index], item)
-                  this.tableLoading = false
+                  Object.assign(this.Suplidores[index], item);
+                  this.tableLoading = false;
                 }else {
-                  this.tableLoading = false
-                  this.alert.type = "error"
-                  this.alert.text = result.data.error.errors.message
-                  this.alert.model = true
+                  this.tableLoading = false;
+                  this.alert.type = "error";
+                  this.alert.text = result.data.error.errors.message;
+                  this.alert.model = true;
                 }
               } catch (e) {
-                this.tableLoading = false
-                this.alert.type = "error"
-                this.alert.text = e
-                this.alert.model = true
+                this.tableLoading = false;
+                this.alert.type = "error";
+                this.alert.text = e;
+                this.alert.model = true;
               }
 
 
@@ -495,9 +495,9 @@ export default {
   },
 
       close() {
-        this.view = false,
-          this.dialog = false,
-          this.alert_dialog.model = false,
+        this.view = false;
+          this.dialog = false;
+          this.alert_dialog.model = false;
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem);
           this.editedIndex = -1;
@@ -505,7 +505,7 @@ export default {
       },
 
       async save() {
-        this.cardLoading = true
+        this.cardLoading = true;
         if (this.editedIndex > -1) {
           // edita Suplidor
 
@@ -625,13 +625,13 @@ export default {
         this.editedItem.anotaciones.concat("");
       },
       getColor (active) {
-        if (active) return 'green'
-        else return 'red'
+        if (active) {return 'green'}
+        else {return 'red'}
       },
 
       getActive(active){
-        if(active) return 'A'
-        else return 'I'
+        if(active) {return 'A'}
+        else {return 'I'}
       },
     }
 }

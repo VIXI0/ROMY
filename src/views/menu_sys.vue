@@ -31,8 +31,8 @@
 
     <v-content>
       <v-container fluid fill-height>
-        <v-layout align-left justify-left>
-          <v-flex xs12 sm4 md3 v-for="sistema in sistemas" :key="sistema.sistema">
+        <v-layout align-left justify-left  wrap row>
+          <v-flex xs12 sm4 md3 v-for="sistema in sistemas" :key="sistema.sistema" ma-1>
                 <v-card>
                   <v-img
                     :src="image[`${sistema.sistema}`]"
@@ -49,7 +49,7 @@
 
                   <v-card-actions>
                     <v-btn icon @click="show = !show">
-                      <v-icon>{{ show ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
+                      <v-icon>{{ show[`${sistema.sistema}`] ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
                     <v-btn text color="blue" @click="LoadSis(sistema.link,sistema.sistema)">Ir a Sistema</v-btn>
@@ -88,13 +88,17 @@ import axios from 'axios';
       image: {
         background: require('./../assets/background.jpg'),
         Inventario: require('./../assets/manufacturing-inventory.jpg'),
+        Caja: require('./../assets/cajera-supermercado.jpg'),
       },
       alert: {
         type: 'info',
         model: false,
         text: '',
       },
-      show: false,
+      show: {
+      Inventario: false,
+      Caja: false,
+      },
 
     }),
 

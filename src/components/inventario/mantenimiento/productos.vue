@@ -5,196 +5,196 @@
              <input type="file" accept="image/*" @change="uploadPhoto">
 
 -->
-<v-app style="background-color: rgba(255,255,255,0.0);">
+  <v-app style="background-color: rgba(255,255,255,0.0);">
 
 
-  <v-toolbar flat color="primary" dark max-height="70">
-    <v-toolbar-title dark>Productos</v-toolbar-title>
+    <v-toolbar flat color="primary" dark max-height="70">
+      <v-toolbar-title dark>Productos</v-toolbar-title>
 
-        <v-progress-linear
-      :active="!loading"
-      :indeterminate="!loading"
-      absolute
-      top
-      color="deep-purple accent-4"
-    ></v-progress-linear>
+          <v-progress-linear
+        :active="!loading"
+        :indeterminate="!loading"
+        absolute
+        top
+        color="deep-purple accent-4"
+      ></v-progress-linear>
 
-    <v-divider class="mx-2" inset vertical></v-divider>
+      <v-divider class="mx-2" inset vertical></v-divider>
 
 
-    <v-dialog v-model="dialog" persistent scrollable max-width="600px" :overlay="false">
-      <template v-slot:activator="{ on }">
-        <v-btn color="white"  v-on="on" icon v-show="$store.getters.currentC">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </template>
-
-      <v-card :loading="cardLoading">
-        <v-card-title class="headline primary lighten-2" dark>
-          <span style="color:white" class="headline">{{ formTitle }}</span>
-          <v-spacer></v-spacer>
-          <v-btn dark icon @click="close">
-            <v-icon>mdi-close</v-icon>
+      <v-dialog v-model="dialog" persistent scrollable max-width="600px" :overlay="false">
+        <template v-slot:activator="{ on }">
+          <v-btn color="white"  v-on="on" icon v-show="$store.getters.currentC">
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
-        </v-card-title>
-        <v-divider></v-divider>
+        </template>
+
+        <v-card :loading="cardLoading">
+          <v-card-title class="headline primary lighten-2" dark>
+            <span style="color:white" class="headline">{{ formTitle }}</span>
+            <v-spacer></v-spacer>
+            <v-btn dark icon @click="close">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-divider></v-divider>
 
 
-        <v-card-text>
+          <v-card-text>
 
-          <v-alert  v-model="alert_dialog.model" border="left" transition="slide-x-transition" :type="alert_dialog.type" class="mb-4 ma-1">
-            {{alert_dialog.text}}
-          </v-alert>
+            <v-alert  v-model="alert_dialog.model" border="left" transition="slide-x-transition" :type="alert_dialog.type" class="mb-4 ma-1">
+              {{alert_dialog.text}}
+            </v-alert>
 
 
 
-          <v-container grid-list-md>
-            <v-layout wrap>
+            <v-container grid-list-md>
+              <v-layout wrap>
 
-              <v-flex xs12>
-                <h3>Datos</h3>
-                <v-divider></v-divider>
-              </v-flex>
-            </v-layout>
-
-            <v-layout row wrap>
-              <v-flex md6>
-                <v-text-field label="Nombre" v-model="editedItem.nombre" :filled="view" :readonly="view" autofocus></v-text-field>
-
-                <v-autocomplete  :filled="view" :readonly="view" :items="marcas"  item-text="nombre" item-value="_id" label="marca" v-model="editedItem.marca"></v-autocomplete>
-              </v-flex>
-              <v-flex md6>
-<!--
-                <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" >
-                </v-img>
--->
-                <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" lazy-src="./../../../assets/loading.jpg"  aspect-ratio="1.7" contain  class="grey lighten-2">
-
-                    <input id="upload" type="file" accept="image/*" @change="to_upload" label="Seleccionar Foto" style="height: 150px;" v-show="!view" ref="imgInput">
-                    <template v-slot:placeholder>
-                      <v-row
-                        class="fill-height ma-0"
-                        align="center"
-                        justify="center"
-                      >
-                        <v-progress-circular indeterminate color="grey lighten-5" v-show="!foto.new"></v-progress-circular>
-                        <p>Loading</p>
-                      </v-row>
-                    </template>
-                </v-img>
-
-              </v-flex>
-            </v-layout>
-
-              <v-layout row wrap>
-                <v-flex md12>
-                  <v-textarea outlined label="Descripcion" v-model="editedItem.descripcion" :filled="view" :readonly="view"></v-textarea>
+                <v-flex xs12>
+                  <h3>Datos</h3>
+                  <v-divider></v-divider>
                 </v-flex>
               </v-layout>
-              <v-layout wrap>
-              <v-flex>
-                <v-text-field v-mask="'A - A#- A#'" return-masked-value label="Ubicacion" v-model="editedItem.location" :filled="view" :readonly="view"></v-text-field>
-              </v-flex>
-              <v-flex>
-                <v-autocomplete label="Unidad" :filled="view" :readonly="view" v-model="editedItem.unidad" :items="unidades" item-text="nombre" item-value="nombre"></v-autocomplete>
-              </v-flex>
 
-              <v-flex>
-                <v-autocomplete v-model="editedItem.Suplidor_primario" :filled="view" :readonly="view" :items="suplidores" item-text="nombre" item-value="_id" label="Suplidor Primario"></v-autocomplete>
-              </v-flex>
+              <v-layout row wrap>
+                <v-flex md6>
+                  <v-text-field label="Nombre" v-model="editedItem.nombre" :filled="view" :readonly="view" autofocus></v-text-field>
 
-            </v-layout>
-          </v-container>
-        </v-card-text>
+                  <v-autocomplete  :filled="view" :readonly="view" :items="marcas"  item-text="nombre" item-value="_id" label="marca" v-model="editedItem.marca"></v-autocomplete>
+                </v-flex>
+                <v-flex md6>
+  <!--
+                  <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" >
+                  </v-img>
+  -->
+                  <v-img :src="getImg(editedItem.image, editedItem._id )" max-height="150px" alt="no_img" lazy-src="./../../../assets/loading.jpg"  aspect-ratio="1.7" contain  class="grey lighten-2">
 
-        <v-card-actions v-if="!view" style="background-color: lightgray;">
-          <v-spacer></v-spacer>
-          <v-btn text color="red" @click="close">Cancelar</v-btn>
-          <v-btn color="primary" @click="save">Guardar</v-btn>
-        </v-card-actions>
+                      <input id="upload" type="file" accept="image/*" @change="to_upload" label="Seleccionar Foto" style="height: 150px;" v-show="!view" ref="imgInput">
+                      <template v-slot:placeholder>
+                        <v-row
+                          class="fill-height ma-0"
+                          align="center"
+                          justify="center"
+                        >
+                          <v-progress-circular indeterminate color="grey lighten-5" v-show="!foto.new"></v-progress-circular>
+                          <p>Loading</p>
+                        </v-row>
+                      </template>
+                  </v-img>
 
-        <v-card-actions v-else style="background-color: lightgray;">
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="close">Aceptar</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+                </v-flex>
+              </v-layout>
 
-    <v-spacer></v-spacer>
+                <v-layout row wrap>
+                  <v-flex md12>
+                    <v-textarea outlined label="Descripcion" v-model="editedItem.descripcion" :filled="view" :readonly="view"></v-textarea>
+                  </v-flex>
+                </v-layout>
+                <v-layout wrap>
+                <v-flex>
+                  <v-text-field v-mask="'A - A#- A#'" return-masked-value label="Ubicacion" v-model="editedItem.location" :filled="view" :readonly="view"></v-text-field>
+                </v-flex>
+                <v-flex>
+                  <v-autocomplete label="Unidad" :filled="view" :readonly="view" v-model="editedItem.unidad" :items="unidades" item-text="nombre" item-value="nombre"></v-autocomplete>
+                </v-flex>
 
-    <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" color="white" single-line hide-details rounded solo-inverted flat clearable></v-text-field>
+                <v-flex>
+                  <v-autocomplete v-model="editedItem.Suplidor_primario" :filled="view" :readonly="view" :items="suplidores" item-text="nombre" item-value="_id" label="Suplidor Primario"></v-autocomplete>
+                </v-flex>
 
-  </v-toolbar>
+              </v-layout>
+            </v-container>
+          </v-card-text>
 
-  <v-alert  v-model="alert.model" border="left" transition="slide-x-transition" :type="alert.type" class="mb-4 ma-1">
-    {{alert.text}}
-  </v-alert>
+          <v-card-actions v-if="!view" style="background-color: lightgray;">
+            <v-spacer></v-spacer>
+            <v-btn text color="red" @click="close">Cancelar</v-btn>
+            <v-btn color="primary" @click="save">Guardar</v-btn>
+          </v-card-actions>
 
-  <v-container grid-list-xs,sm,md,lg,xl>
-    <v-layout row wrap>
-      <v-flex xs12>
-        <v-data-table
-          :headers="headers"
-          :items="productos"
-          :sort-desc="[false, true]"
-          :search="search"
-          :dense="this.$store.getters.tableDense"
-          :loading="tableLoading"
-          multi-sort
-          class="elevation-1">
+          <v-card-actions v-else style="background-color: lightgray;">
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click="close">Aceptar</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-          <template v-slot:item.active="{ item }">
-            <v-chip small :color="getColor(item.active)" dark>{{ getActive(item.active) }}</v-chip>
-          </template>
+      <v-spacer></v-spacer>
 
-          <template v-slot:item.action="{ item }">
-            <v-icon
-              v-show="$store.getters.currentR"
-              small
-              class="mr-2"
-              @click="viewItem(item)"
-            >
-              mdi-magnify
-            </v-icon>
-            <v-icon
-              v-show="$store.getters.currentU"
-              small
-              class="mr-2"
-              @click="editItem(item)"
-            >
-              mdi-pencil
-            </v-icon>
+      <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" color="white" single-line hide-details rounded solo-inverted flat clearable></v-text-field>
 
-            <template v-if="item.active">
+    </v-toolbar>
+
+    <v-alert  v-model="alert.model" border="left" transition="slide-x-transition" :type="alert.type" class="mb-4 ma-1">
+      {{alert.text}}
+    </v-alert>
+
+    <v-container grid-list-xs,sm,md,lg,xl>
+      <v-layout row wrap>
+        <v-flex xs12>
+          <v-data-table
+            :headers="headers"
+            :items="productos"
+            :sort-desc="[false, true]"
+            :search="search"
+            :dense="this.$store.getters.tableDense"
+            :loading="tableLoading"
+            multi-sort
+            class="elevation-1">
+
+            <template v-slot:item.active="{ item }">
+              <v-chip small :color="getColor(item.active)" dark>{{ getActive(item.active) }}</v-chip>
+            </template>
+
+            <template v-slot:item.action="{ item }">
               <v-icon
+                v-show="$store.getters.currentR"
+                small
+                class="mr-2"
+                @click="viewItem(item)"
+              >
+                mdi-magnify
+              </v-icon>
+              <v-icon
+                v-show="$store.getters.currentU"
+                small
+                class="mr-2"
+                @click="editItem(item)"
+              >
+                mdi-pencil
+              </v-icon>
+
+              <template v-if="item.active">
+                <v-icon
+                  v-show="$store.getters.currentA"
+                  small
+                  class="mr-2"
+                  @click="deleteItem(item)"
+                >
+                  mdi-delete
+                </v-icon>
+              </template>
+
+              <template v-else>
+                <v-icon
                 v-show="$store.getters.currentA"
                 small
                 class="mr-2"
-                @click="deleteItem(item)"
-              >
-                mdi-delete
-              </v-icon>
+                @click="restoreItem(item)"
+                >mdi-backup-restore</v-icon>
+              </template>
+
+
+
+
             </template>
+        </v-data-table>
+        </v-flex>
+      </v-layout>
+    </v-container>
 
-            <template v-else>
-              <v-icon
-              v-show="$store.getters.currentA"
-              small
-              class="mr-2"
-              @click="restoreItem(item)"
-              >mdi-backup-restore</v-icon>
-            </template>
-
-
-
-
-          </template>
-      </v-data-table>
-      </v-flex>
-    </v-layout>
-  </v-container>
-
-</v-app>
+  </v-app>
 </template>
 
 <script>
@@ -307,9 +307,9 @@ export default {
     computed: {
       formTitle() {
         if (this.editedIndex === -1) {
-          return 'Nuevo Producto'
+          return 'Nuevo Producto';
         } else {
-          return this.view === true ? 'Mostrar Producto' : 'Editar Producto'
+          return this.view === true ? 'Mostrar Producto' : 'Editar Producto';
         }
 
       }
@@ -317,7 +317,7 @@ export default {
 
     watch: {
       dialog(val) {
-        val || this.close()
+        val || this.close();
       }
     },
 
@@ -334,7 +334,7 @@ export default {
 
 
       async initialize() {
-        this.tableLoading = true
+        this.tableLoading = true;
         try {
           var result;
           if (this.$store.getters.currentA) {
@@ -383,9 +383,9 @@ export default {
           }
 
         } catch (e) {
-          this.alert.type = "error"
-          this.alert.text = e
-          this.alert.model = true
+          this.alert.type = "error";
+          this.alert.text = e;
+          this.alert.model = true;
         } finally {
 
           if(this.$store.getters.currentA){
@@ -436,28 +436,28 @@ export default {
             }
           })
         } catch (e) {
-          this.alert.type = "error"
-          this.alert.text = e
-          this.alert.model = true
+          this.alert.type = "error";
+          this.alert.text = e;
+          this.alert.model = true;
         } finally {
-          this.suplidores = result1.data.data.Suplidores
-          this.marcas = result2.data.data.marcas
+          this.suplidores = result1.data.data.Suplidores;
+          this.marcas = result2.data.data.marcas;
         }
 
       },
 
       editItem(item) {
-        this.view = false,
-          this.editedIndex = this.productos.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.view = false;
+          this.editedIndex = this.productos.indexOf(item);
+        this.editedItem = Object.assign({}, item);
+        this.dialog = true;
       },
 
       viewItem(item) {
-        this.view = true,
-          this.editedIndex = this.productos.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.view = true;
+          this.editedIndex = this.productos.indexOf(item);
+        this.editedItem = Object.assign({}, item);
+        this.dialog = true;
 
       },
 
@@ -496,21 +496,21 @@ export default {
                               }
                             })
                 if ( result.data.data.updateProducto ) {
-                  const index = this.productos.indexOf(item)
+                  const index = this.productos.indexOf(item);
                   item.active = false;
-                  Object.assign(this.productos[index], item)
-                  this.tableLoading = false
+                  Object.assign(this.productos[index], item);
+                  this.tableLoading = false;
                 }else {
-                  this.tableLoading = false
-                  this.alert.type = "error"
-                  this.alert.text = result.data.error.errors.message
-                  this.alert.model = true
+                  this.tableLoading = false;
+                  this.alert.type = "error";
+                  this.alert.text = result.data.error.errors.message;
+                  this.alert.model = true;
                 }
               } catch (e) {
-                this.tableLoading = false
-                this.alert.type = "error"
-                this.alert.text = e
-                this.alert.model = true
+                this.tableLoading = false;
+                this.alert.type = "error";
+                this.alert.text = e;
+                this.alert.model = true;
               }
 
 
@@ -554,21 +554,21 @@ export default {
                               }
                             })
                 if ( result.data.data.updateProducto ) {
-                  const index = this.productos.indexOf(item)
+                  const index = this.productos.indexOf(item);
                   item.active = true;
-                  Object.assign(this.productos[index], item)
-                  this.tableLoading = false
+                  Object.assign(this.productos[index], item);
+                  this.tableLoading = false;
                 }else {
-                  this.tableLoading = false
-                  this.alert.type = "error"
-                  this.alert.text = result.data.error.errors.message
-                  this.alert.model = true
+                  this.tableLoading = false;
+                  this.alert.type = "error";
+                  this.alert.text = result.data.error.errors.message;
+                  this.alert.model = true;
                 }
               } catch (e) {
-                this.tableLoading = false
-                this.alert.type = "error"
-                this.alert.text = e
-                this.alert.model = true
+                this.tableLoading = false;
+                this.alert.type = "error";
+                this.alert.text = e;
+                this.alert.model = true;
               }
 
 
@@ -578,13 +578,13 @@ export default {
   },
 
       close() {
-        this.dialog = false,
+        this.dialog = false;
 
         this.foto.new = false;
         let list = new DataTransfer();
         this.$refs.imgInput.files = list.files;
-        this.alert_dialog.model = false,
-        this.view = false,
+        this.alert_dialog.model = false;
+        this.view = false;
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem);
           this.editedIndex = -1;
@@ -597,7 +597,7 @@ export default {
           this.editedItem.image = this.getFileExtension(this.foto.file.name);
         }
 
-        this.cardLoading = true
+        this.cardLoading = true;
         if (this.editedIndex > -1) {
           // edita producto
 
@@ -726,13 +726,13 @@ export default {
       },
 
       getColor (active) {
-        if (active) return 'green'
-        else return 'red'
+        if (active) {return 'green'}
+        else {return 'red'}
       },
 
       getActive(active){
-        if(active) return 'A'
-        else return 'I'
+        if(active) {return 'A'}
+        else {return 'I'}
       },
 
       getImg(name, _id){
@@ -761,7 +761,7 @@ export default {
 
       to_upload({ target }){
         this.foto.file = target.files[0];
-        this.foto.new = true
+        this.foto.new = true;
       },
 
      getFileExtension(filename){

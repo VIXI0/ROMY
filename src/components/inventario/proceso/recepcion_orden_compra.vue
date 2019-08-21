@@ -3,7 +3,7 @@
 
 
     <v-toolbar flat color="primary" dark max-height="70">
-      <v-toolbar-title dark>Recepción O.C.</v-toolbar-title>
+      <v-toolbar-title dark>Marcas</v-toolbar-title>
       <v-divider class="mx-2" inset vertical></v-divider>
 
 
@@ -190,9 +190,9 @@ export default {
     computed: {
       formTitle() {
         if (this.editedIndex === -1) {
-          return 'Nuevo Marca'
+          return 'Nuevo Marca';
         } else {
-          return this.view === true ? 'Mostrar Marca' : 'Editar Marca'
+          return this.view === true ? 'Mostrar Marca' : 'Editar Marca';
         }
 
       }
@@ -200,7 +200,7 @@ export default {
 
     watch: {
       dialog(val) {
-        val || this.close()
+        val || this.close();
       }
     },
 
@@ -216,7 +216,7 @@ export default {
     methods: {
 
       async initialize() {
-        this.tableLoading = true
+        this.tableLoading = true;
         try {
           var result;
           if (this.$store.getters.currentA) {
@@ -251,9 +251,9 @@ export default {
           }
 
         } catch (e) {
-          this.alert.type = "error"
-          this.alert.text = e
-          this.alert.model = true
+          this.alert.type = "error";
+          this.alert.text = e;
+          this.alert.model = true;
         } finally {
 
           if(this.$store.getters.currentA){
@@ -263,27 +263,27 @@ export default {
             });
             this.marcas = result.data.data.marcasAll;
           }else {
-            this.marcas = result.data.data.marcas
+            this.marcas = result.data.data.marcas;
           }
 
 
-          this.tableLoading = false
+          this.tableLoading = false;
         }
 
       },
 
       editItem(item) {
-        this.view = false,
-          this.editedIndex = this.marcas.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.view = false;
+          this.editedIndex = this.marcas.indexOf(item);
+        this.editedItem = Object.assign({}, item);
+        this.dialog = true;
       },
 
       viewItem(item) {
-        this.view = true,
-          this.editedIndex = this.marcas.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+        this.view = true;
+          this.editedIndex = this.marcas.indexOf(item);
+        this.editedItem = Object.assign({}, item);
+        this.dialog = true;
 
       },
 
@@ -322,21 +322,21 @@ export default {
                               }
                             })
                 if ( result.data.data.updateMarca ) {
-                  const index = this.marcas.indexOf(item)
+                  const index = this.marcas.indexOf(item);
                   item.active = false;
-                  Object.assign(this.marcas[index], item)
-                  this.tableLoading = false
+                  Object.assign(this.marcas[index], item);
+                  this.tableLoading = false;
                 }else {
-                  this.tableLoading = false
-                  this.alert.type = "error"
-                  this.alert.text = result.data.error.errors.message
-                  this.alert.model = true
+                  this.tableLoading = false;
+                  this.alert.type = "error";
+                  this.alert.text = result.data.error.errors.message;
+                  this.alert.model = true;
                 }
               } catch (e) {
-                this.tableLoading = false
-                this.alert.type = "error"
-                this.alert.text = e
-                this.alert.model = true
+                this.tableLoading = false;
+                this.alert.type = "error";
+                this.alert.text = e;
+                this.alert.model = true;
               }
 
 
@@ -380,21 +380,21 @@ export default {
                               }
                             })
                 if ( result.data.data.updateMarca ) {
-                  const index = this.marcas.indexOf(item)
+                  const index = this.marcas.indexOf(item);
                   item.active = true;
-                  Object.assign(this.marcas[index], item)
-                  this.tableLoading = false
+                  Object.assign(this.marcas[index], item);
+                  this.tableLoading = false;
                 }else {
-                  this.tableLoading = false
-                  this.alert.type = "error"
-                  this.alert.text = result.data.error.errors.message
-                  this.alert.model = true
+                  this.tableLoading = false;
+                  this.alert.type = "error";
+                  this.alert.text = result.data.error.errors.message;
+                  this.alert.model = true;
                 }
               } catch (e) {
-                this.tableLoading = false
-                this.alert.type = "error"
-                this.alert.text = e
-                this.alert.model = true
+                this.tableLoading = false;
+                this.alert.type = "error";
+                this.alert.text = e;
+                this.alert.model = true;
               }
 
 
@@ -404,9 +404,9 @@ export default {
   },
 
       close() {
-        this.view = false,
-          this.dialog = false,
-          this.alert_dialog.model = false,
+        this.view = false;
+          this.dialog = false;
+          this.alert_dialog.model = false;
         setTimeout(() => {
           this.editedItem = Object.assign({}, this.defaultItem);
           this.editedIndex = -1;
@@ -414,7 +414,7 @@ export default {
       },
 
       async save() {
-        this.cardLoading = true
+        this.cardLoading = true;
         if (this.editedIndex > -1) {
           // edita marca
 
@@ -511,13 +511,13 @@ export default {
       },
 
       getColor (active) {
-        if (active) return 'green'
-        else return 'red'
+        if (active) {return 'green'}
+        else {return 'red'}
       },
 
       getActive(active){
-        if(active) return 'A'
-        else return 'I'
+        if(active) {return 'A'}
+        else {return 'I'}
       },
     }
 }
