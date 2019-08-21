@@ -40,16 +40,16 @@ export default new Vuex.Store({
 
   },
   getters: {
-  tableDense: state => state.tableDense,
-  role: state => state.role,
-  sistemas: state => state.role.permisos,
-  currentSis: state => state.currentSis,
-  currentC: state => state.currentCRUDA.c,
-  currentR: state => state.currentCRUDA.r,
-  currentU: state => state.currentCRUDA.u,
-  currentD: state => state.currentCRUDA.d,
-  currentA: state => state.currentCRUDA.a,
+  tableDense: (state) => state.tableDense,
+  role: (state) => state.role,
+  sistemas: (state) => state.role.permisos,
+  currentSis: (state) => state.currentSis,
+  currentC: (state) => state.currentCRUDA.c,
+  currentR: (state) => state.currentCRUDA.r,
+  currentU: (state) => state.currentCRUDA.u,
+  currentD: (state) => state.currentCRUDA.d,
+  currentA: (state) => state.currentCRUDA.a,
 
-  roleName: state => state.role.nombre,
+  roleName: (state) => state.role.nombre,
 }
 });

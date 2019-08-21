@@ -73,7 +73,7 @@
 <script>
 import axios from 'axios';
 
-  export default {
+export default {
 
     props: {
       source: String,
@@ -84,6 +84,7 @@ import axios from 'axios';
       drawer: null,
       descripcion: {
         Inventario: 'El inventario representa la existencia de bienes almacenados destinados a realizar una operación, sea de compra, alquiler, venta, uso o transformación. Debe aparecer, contablemente, dentro del activo como un activo circulante.',
+
         Caja: 'La caja es el área donde estarás la mayor parte del tiempo brindando atención a clientes y cobrando por los productos de la tienda.',
       },
       image: {
@@ -106,13 +107,13 @@ import axios from 'axios';
     created() {
       this.sistemas = this.$store.getters.sistemas;
     },
-    methods:{
+    methods: {
 
-      checkSis(sistemas){
+      checkSis (sistemas) {
         return sistemas.sistema = this.tempSis;
       },
 
-      LoadSis(link,sistema){
+      LoadSis (link, sistema) {
         this.tempSis = sistema;
         const index = this.sistemas.findIndex(this.checkSis);
         this.$store.commit('setCS', index);
@@ -136,7 +137,7 @@ import axios from 'axios';
           this.alert.text = e,
           this.alert.model = true;
         } finally {
-          this.$http.defaults.headers.common['Authorization'] = 'Bearer ' + token.data.data.logout;
+          this.$http.defaults.headers.common.Authorization = 'Bearer ' + token.data.data.logout;
           this.$router.push('/');
 
         }
