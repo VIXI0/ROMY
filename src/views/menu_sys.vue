@@ -83,7 +83,8 @@ import axios from 'axios';
       tempSis: null,
       drawer: null,
       descripcion: {
-        Inventario: "El inventario representa la existencia de bienes almacenados destinados a realizar una operación, sea de compra, alquiler, venta, uso o transformación. Debe aparecer, contablemente, dentro del activo como un activo circulante.",
+        Inventario: 'El inventario representa la existencia de bienes almacenados destinados a realizar una operación, sea de compra, alquiler, venta, uso o transformación. Debe aparecer, contablemente, dentro del activo como un activo circulante.',
+        Caja: 'La caja es el área donde estarás la mayor parte del tiempo brindando atención a clientes y cobrando por los productos de la tienda.',
       },
       image: {
         background: require('./../assets/background.jpg'),
