@@ -147,14 +147,14 @@ export default {
   directives: {mask},
   data: () => ({
     alert: {
-      type: "info",
+      type: 'info',
       model: false,
-      text: ""
+      text: '',
     },
     alert_dialog: {
-      type: "info",
+      type: 'info',
       model: false,
-      text: ""
+      text: '',
     },
     tableLoading: false,
     cardLoading: false,
@@ -165,12 +165,12 @@ export default {
     headers: [
       {
         text: 'Nombre',
-        value: 'nombre'
+        value: 'nombre',
       },
       {
         text: 'Actions',
         value: 'action',
-        sortable: false
+        sortable: false,
       }
     ],
     marcas: [],
@@ -251,7 +251,7 @@ export default {
           }
 
         } catch (e) {
-          this.alert.type = "error";
+          this.alert.type = 'error';
           this.alert.text = e;
           this.alert.model = true;
         } finally {
@@ -310,7 +310,7 @@ export default {
               try {
                 //console.log(item);
                 var result = await axios({
-                              method: "POST",
+                              method: 'POST',
                               data: {
                                 query: `
                                   mutation {
@@ -328,13 +328,13 @@ export default {
                   this.tableLoading = false;
                 }else {
                   this.tableLoading = false;
-                  this.alert.type = "error";
+                  this.alert.type = 'error';
                   this.alert.text = result.data.error.errors.message;
                   this.alert.model = true;
                 }
               } catch (e) {
                 this.tableLoading = false;
-                this.alert.type = "error";
+                this.alert.type = 'error';
                 this.alert.text = e;
                 this.alert.model = true;
               }
@@ -368,7 +368,7 @@ export default {
               try {
                 //console.log(item);
                 var result = await axios({
-                              method: "POST",
+                              method: 'POST',
                               data: {
                                 query: `
                                   mutation {
@@ -386,13 +386,13 @@ export default {
                   this.tableLoading = false;
                 }else {
                   this.tableLoading = false;
-                  this.alert.type = "error";
+                  this.alert.type = 'error';
                   this.alert.text = result.data.error.errors.message;
                   this.alert.model = true;
                 }
               } catch (e) {
                 this.tableLoading = false;
-                this.alert.type = "error";
+                this.alert.type = 'error';
                 this.alert.text = e;
                 this.alert.model = true;
               }
@@ -423,7 +423,7 @@ export default {
 
             if(this.editedItem.active === null || this.editedItem.active === undefined || this.editedItem.active === false){
               result = await axios({
-                            method: "POST",
+                            method: 'POST',
                             data: {
                               query: `
                                 mutation {
@@ -437,7 +437,7 @@ export default {
                           })
             }else {
               result = await axios({
-                            method: "POST",
+                            method: 'POST',
                             data: {
                               query: `
                                 mutation {
@@ -457,13 +457,13 @@ export default {
               this.close();
             }else {
               this.cardLoading = false;
-              this.alert_dialog.type = "error";
+              this.alert_dialog.type = 'error';
               this.alert_dialog.text = result.data.error.errors.message;
               this.alert_dialog.model = true;
             }
           } catch (e) {
             this.cardLoading = false;
-            this.alert_dialog.type = "error";
+            this.alert_dialog.type = 'error';
             this.alert_dialog.text = e;
             this.alert_dialog.model = true;
           }
@@ -472,7 +472,7 @@ export default {
 
           try {
             var result = await axios({
-              method: "POST",
+              method: 'POST',
               data: {
                 query: `
                   mutation {
@@ -494,13 +494,13 @@ export default {
               this.close();
             }else {
               this.cardLoading = false;
-              this.alert_dialog.type = "error";
+              this.alert_dialog.type = 'error';
               this.alert_dialog.text = result.data.data.createMarca;
               this.alert_dialog.model = true;
             }
           } catch (e) {
             this.cardLoading = false;
-            this.alert_dialog.type = "error";
+            this.alert_dialog.type = 'error';
             this.alert_dialog.text = e;
             this.alert_dialog.model = true;
           }
@@ -511,13 +511,19 @@ export default {
       },
 
       getColor (active) {
-        if (active) {return 'green'}
-        else {return 'red'}
+        if (active) {
+          return 'green';
+        } else {
+          return 'red';
+        }
       },
 
       getActive(active){
-        if(active) {return 'A'}
-        else {return 'I'}
+        if(active) {
+          return 'A';
+        } else {
+          return 'I';
+        }
       },
     }
 }

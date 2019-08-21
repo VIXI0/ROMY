@@ -1,7 +1,7 @@
 <template>
 <v-app style="background-color: rgba(255,255,255,0.0);">
 
-    <v-alert  v-model="alert.model" border="left" transition="slide-x-transition" :type="alert.type" class="mb-4 ma-1">
+    <v-alert  v-model="alert.model" border="left" transition="slide-x-transition" :type="alert.type" mb-4 ma-1>
       {{alert.text}}
     </v-alert>
 
@@ -91,14 +91,14 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   data: () => ({
     alert: {
-      type: "info",
+      type: 'info',
       model: false,
-      text: ""
+      text: '',
     },
     user: '',
     labels: [
@@ -123,14 +123,14 @@ export default {
   }),
 
   created() {
-    this.initialize()
+    this.initialize();
   },
   methods: {
     async initialize() {
 
       try {
         var result = await axios({
-          method: "POST",
+          method: 'POST',
           data: {
             query: `
             {
@@ -140,7 +140,7 @@ export default {
           }
         })
       } catch (e) {
-        this.alert.type = "error"
+        this.alert.type = 'error'
         this.alert.text = e
         this.alert.model = true
       } finally {
