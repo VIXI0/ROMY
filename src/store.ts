@@ -7,7 +7,7 @@ export default new Vuex.Store({
   state: {
     tableDense: false,
     role: {
-      nombre: "",
+      nombre: '',
       permisos: [],
     },
     currentSis: null,
@@ -28,11 +28,11 @@ export default new Vuex.Store({
       state.role = role;
     },
 
-    setCS(state, nSis){
+    setCS(state, nSis) {
       state.currentSis = nSis;
     },
 
-    setCRUDA(state, CRUDA){
+    setCRUDA(state, CRUDA) {
       state.currentCRUDA = CRUDA;
     },
   },
