@@ -51,5 +51,5 @@ export default new Vuex.Store({
   currentA: (state) => state.currentCRUDA.a,
 
   roleName: (state) => state.role.nombre,
-}
+},
 });

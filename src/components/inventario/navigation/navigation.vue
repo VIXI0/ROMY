@@ -3,7 +3,7 @@
 
     <v-app-bar color="primary" dense app>
 
-      <v-btn color="white" icon text to='/inv_main'><v-icon>mdi-home</v-icon></v-btn>
+      <v-btn color="white" icon text to='/inv_welcome'><v-icon>mdi-home</v-icon></v-btn>
 
 
 

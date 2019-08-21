@@ -13,7 +13,7 @@
 
   <v-container grid-list-xs,sm,md,lg,xl>
     <v-layout row wrap>
-      <v-flex md6>
+      <v-flex md4>
         <v-card
         class="mx-auto text-xs-center"
         color="green"
@@ -44,12 +44,12 @@
         <v-divider></v-divider>
 
         <v-card-actions class="justify-center">
-          <v-btn block text>Go to Report</v-btn>
+          <v-btn block text>Ir al reporte</v-btn>
         </v-card-actions>
       </v-card>
       </v-flex>
 
-      <v-flex md6>
+      <v-flex md6 ma-1>
         <v-card
          class="mt-3 mx-auto"
          max-width="400"
@@ -118,7 +118,7 @@ export default {
   510,
   590,
   610,
-  760
+  760,
 ],
   }),
 
@@ -136,21 +136,25 @@ export default {
             {
               currentU
             }
-                `
-          }
-        })
+                `,
+          },
+        });
       } catch (e) {
-        this.alert.type = 'error'
-        this.alert.text = e
-        this.alert.model = true
+        this.alert.type = 'error';
+        this.alert.text = e;
+        this.alert.model = true;
       } finally {
-        this.user = result.data.data.currentU
+        this.user = result.data.data.currentU;
       }
 
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="css" scoped>
+.v-sheet--offset {
+  top: -24px;
+  position: relative;
+}
 </style>

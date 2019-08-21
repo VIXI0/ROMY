@@ -12,7 +12,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 import { createUploadLink } from 'apollo-upload-client';
 import VueApollo from 'vue-apollo';
-//const VueTheMask = require('vue-the-mask');
+// const VueTheMask = require('vue-the-mask');
 
 
 Vue.config.productionTip = false;
@@ -20,23 +20,23 @@ Vue.config.productionTip = false;
 
 
 Vue.prototype.$http = axios;
-Vue.prototype.$http.defaults.baseURL = "http://localhost:4000/";
+Vue.prototype.$http.defaults.baseURL = 'http://localhost:4000/';
 
 Vue.use(VueApollo);
 
 const apolloClient = new ApolloClient({
   link: createUploadLink({ uri: 'http://localhost:4000/' }),
-  cache: new InMemoryCache()
-})
+  cache: new InMemoryCache(),
+});
 
 const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
-})
+  defaultClient: apolloClient,
+});
 
 
 const token = localStorage.getItem('token');
-if(token){
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+if (token) {
+  Vue.prototype.$http.defaults.headers.common.Authorization = token;
 }
 /*
 Vue.use(Vuetify, {
@@ -49,12 +49,12 @@ Vue.use(Vuetify, {
 })
 */
 
-//Vue.use(VueTheMask)
+// Vue.use(VueTheMask)
 
 new Vue({
   apolloProvider,
   router,
   store,
   vuetify,
-  render: (h) => h(App)
+  render: (h) => h(App),
 }).$mount('#app');

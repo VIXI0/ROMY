@@ -109,11 +109,11 @@ export default {
     },
     methods: {
 
-      checkSis (sistemas) {
+      checkSis(sistemas) {
         return sistemas.sistema = this.tempSis;
       },
 
-      LoadSis (link, sistema) {
+      LoadSis(link, sistema) {
         this.tempSis = sistema;
         const index = this.sistemas.findIndex(this.checkSis);
         this.$store.commit('setCS', index);

@@ -253,11 +253,11 @@ export default {
           this.alert.model = true;
         } else {
           this.$http.defaults.headers.common.Authorization = 'Bearer ' + token.data.data.login;
-          let setR = await this.setRole();
+          const setR = await this.setRole();
           if (setR === true ) {
             this.$router.push('/menu_sys');
-          }else {
-            this.alert.type = "error";
+          } else {
+            this.alert.type = 'error';
             this.alert.text = setR;
             this.alert.model = true;
           }

@@ -24,8 +24,8 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: "/index.html",
-      redirect: "/"
+      path: '/index.html',
+      redirect: '/',
     },
     {
       path: '/',
@@ -48,52 +48,52 @@ export default new Router({
         {
           path: '/inv_welcome',
           name: 'inv_welcome',
-          component: inv_welcome
+          component: inv_welcome,
         },
 
           {
             path: '/inv_suplidores',
             name: 'inv_suplidores',
-            component: inv_suplidores
+            component: inv_suplidores,
           },
 
           {
             path: '/inv_marcas',
             name: 'inv_marcas',
-            component: inv_marcas
+            component: inv_marcas,
           },
 
           {
             path: '/inv_productos',
             name: 'inv_productos',
-            component: inv_productos
+            component: inv_productos,
           },
 
           {
             path: '/inv_compra',
             name: 'inv_compra',
-            component: inv_compra
+            component: inv_compra,
           },
 
           {
             path: '/inv_orden_compra',
             name: 'inv_orden_compra',
-            component: inv_orden_compra
+            component: inv_orden_compra,
           },
 
           {
             path: '/inv_recepcion_orden_compra',
             name: 'inv_recepcion_orden_compra',
-            component: inv_recepcion_orden_compra
+            component: inv_recepcion_orden_compra,
           },
 
           {
             path: '/inv_transferencia',
             name: 'inv_transferencia',
-            component: inv_transferencia
+            component: inv_transferencia,
           },
 
-      ]
-    }
+      ],
+    },
   ],
 });
