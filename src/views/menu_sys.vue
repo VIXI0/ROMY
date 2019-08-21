@@ -48,7 +48,7 @@
                   </v-card-title>
 
                   <v-card-actions>
-                    <v-btn icon @click="show = !show">
+                    <v-btn icon @click="show[`${sistema.sistema}`] = !show[`${sistema.sistema}`]">
                       <v-icon>{{ show[`${sistema.sistema}`] ? 'mdi-chevron-down' : 'mdi-chevron-up' }}</v-icon>
                     </v-btn>
                     <v-spacer></v-spacer>
@@ -56,7 +56,7 @@
                   </v-card-actions>
 
                   <v-slide-y-transition>
-                    <v-card-text v-show="show">
+                    <v-card-text v-show="show[`${sistema.sistema}`]">
                       {{descripcion[`${sistema.sistema}`]}}
                     </v-card-text>
                   </v-slide-y-transition>
