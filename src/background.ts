@@ -3,7 +3,7 @@
 import { app, protocol, BrowserWindow, globalShortcut } from 'electron';
 import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
 
-//const { autoUpdater } = require("electron-updater")
+// const { autoUpdater } = require("electron-updater")
 import { autoUpdater } from 'electron-updater';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -17,13 +17,13 @@ protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true
 
 function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ width: 1000, minWidth: 1000, height: 700, frame: true, webPreferences: {
+  win = new BrowserWindow({ width: 1000, minWidth: 800, height: 700, frame: true, webPreferences: {
     nodeIntegration: true,
   } });
 
-  if (!isDevelopment) {
+
     win.removeMenu();
-  }
+
 
   globalShortcut.register('CommandOrControl+F', () => {
     if (win !== null && win !== undefined) {
@@ -107,14 +107,14 @@ app.on('ready', async () => {
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
-    process.on('message', data => {
+    process.on('message', (data) => {
       if (data === 'graceful-exit') {
         app.quit();
       }
-    })
+    });
   } else {
     process.on('SIGTERM', () => {
       app.quit();
-    })
+    });
   }
 }

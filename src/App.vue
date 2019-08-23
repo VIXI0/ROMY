@@ -1,21 +1,43 @@
 <template>
   <v-app>
 <!--
-  <v-system-bar color="primary" style="color: black; -webkit-app-region: drag;" app elevation="20">
-    <img src="./../build/icons/24x24.png" alt="">
-    <span>ROM</span>
-    <v-spacer></v-spacer>
-    <v-btn @click="minimize" text style="-webkit-app-region: no-drag"><v-icon  style="color: black;">mdi-window-minimize</v-icon></v-btn>
-    <v-btn @click="maximize" text style="-webkit-app-region: no-drag"><v-icon style="color: black;">{{maxicon}}</v-icon></v-btn>
-    <v-btn color="red darken-4" @click="quit" text  style="-webkit-app-region: no-drag"><v-icon color="black" style="color: black;">mdi-window-close</v-icon></v-btn>
-  </v-system-bar>
+    <v-navigation-drawer permanent  expand-on-hover fixed dark app :src="image.background">
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            Application
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            subtext
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
 
-  <v-content>
-    <router-view></router-view>
-  </v-content>
+      <v-divider></v-divider>
+
+      <v-list
+        dense
+        nav
+      >
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
 -->
-
-    <router-view></router-view>
+      <v-img :src="image.background" >
+        <router-view></router-view>
+      </v-img>
 
   </v-app>
 </template>
@@ -28,7 +50,16 @@ const win = remote.getCurrentWindow();
 export default Vue.extend({
   name: 'App',
   data: () => ({
-      maxicon: 'mdi-window-maximize',
+    image: {
+        background: require('./assets/background.jpg'),
+      },
+        items: [
+          { title: 'Dashboard', icon: 'mdi-view-dashboard' },
+          { title: 'Photos', icon: 'mdi-image' },
+          { title: 'About', icon: 'mdi-help-box' },
+        ],
+        right: null,
+      drawer: null,
   }),
 
   methods: {
@@ -44,10 +75,8 @@ export default Vue.extend({
     maximize() {
       if (!win.isMaximized()) {
         win.maximize();
-        this.maxicon = 'mdi-window-restore';
       } else {
         win.unmaximize();
-        this.maxicon = 'mdi-window-maximize';
       }
     },
   },
